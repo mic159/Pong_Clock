@@ -44,7 +44,6 @@ void setup(void) {
   randomSeed(analogRead(A3));
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
-  display.setTextSize(2);
   display.clearDisplay();
   if (!RTC.isrunning()) {
     RTC.adjust(DateTime(__DATE__, __TIME__));
@@ -53,7 +52,7 @@ void setup(void) {
   readclock();
 
   game.setScore(hour, minute);
-  
+
   // Setup buttons
   pinMode(MINUTE_PIN, INPUT_PULLUP);
   pinMode(HOUR_PIN, INPUT_PULLUP);
@@ -61,6 +60,16 @@ void setup(void) {
   hourBtn.attach(HOUR_PIN);
   minuteBtn.interval(30);
   hourBtn.interval(30);
+
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(5, 20);
+  display.println("Pong Clock");
+  display.setTextSize(1);
+  display.setCursor(65, 56);
+  display.println("by 0miker0");
+  display.display();
+  delay(3000);
 }
 
 void readclock() {
@@ -74,6 +83,7 @@ void readclock() {
 }
 
 void loop() {
+  display.clearDisplay();
   readclock();
   game.update(hour, minute);
   game.draw(display);
@@ -81,7 +91,6 @@ void loop() {
   buttons();
 
   display.display();
-  display.clearDisplay();
 }
 
 void buttons() {
