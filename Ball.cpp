@@ -1,7 +1,7 @@
 
 #define WHITE 1
 
-#include <arduino.h>
+#include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include "Paddle.h"
 #include "Ball.h"

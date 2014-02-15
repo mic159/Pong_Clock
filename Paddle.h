@@ -1,7 +1,6 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-#include <arduino.h>
 #include <Adafruit_GFX.h>
 
 struct Paddle {

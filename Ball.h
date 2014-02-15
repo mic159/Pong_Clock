@@ -1,7 +1,6 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include <arduino.h>
 #include <Adafruit_GFX.h>
 #include "Paddle.h"
 
