@@ -54,8 +54,8 @@ void setup(void) {
   game.setScore(hour, minute);
 
   // Setup buttons
-  pinMode(MINUTE_PIN, INPUT_PULLUP);
-  pinMode(HOUR_PIN, INPUT_PULLUP);
+  pinMode(MINUTE_PIN, INPUT);
+  pinMode(HOUR_PIN, INPUT);
   minuteBtn.attach(MINUTE_PIN);
   hourBtn.attach(HOUR_PIN);
   minuteBtn.interval(30);
@@ -101,7 +101,7 @@ void buttons() {
     setclock();
   }
 
-  if (minuteBtn.update() && minuteBtn.read()) {
+  if (hourBtn.update() && hourBtn.read()) {
     hour = hour + 1;
     if (hour > 12) hour = 1;
     game.setScore(hour, minute);
