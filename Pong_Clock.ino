@@ -2,6 +2,7 @@
  * Pongclock Code for Mike's custom sensor Board.
  * Original Code from https://github.com/rparrett/pongclock
  * Hardware adapted by KaR]V[aN, http://karman.cc
+ * Modified by mic159
  *
  * Requirements:
  * Bounce http://playground.arduino.cc/code/bounce
@@ -10,7 +11,7 @@
  * RTClib https://github.com/adafruit/RTClib
  */
 
-#include <Bounce.h>    // http://playground.arduino.cc/code/bounce
+#include <Bounce2.h>
 #include <SPI.h>
 #include <Wire.h>
 #include <EEPROM.h>
@@ -24,23 +25,22 @@
 
 #define OLED_RESET 4
 
-const int BUTTON_MINUTE = A1;
-const int BUTTON_HOUR = A2;
+const int MINUTE_PIN = A1;
+const int HOUR_PIN = A2;
 
-Bounce minutebouncer = Bounce(BUTTON_MINUTE, 20);
-Bounce hourbouncer = Bounce(BUTTON_HOUR, 20);
+Bounce minuteBtn;
+Bounce hourBtn;
 Adafruit_SSD1306 display(OLED_RESET);
 RTC_DS1307 RTC;
 
-int16_t hour = 12;
-int16_t minute = 4;
-volatile int16_t second = 0;
+int16_t hour;
+int16_t minute;
+int16_t second;
 
 PongGame game;
 
 
-void setup(void) 
-{
+void setup(void) {
   randomSeed(analogRead(A3));
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
@@ -54,10 +54,13 @@ void setup(void)
 
   game.setScore(hour, minute);
   
-  pinMode(BUTTON_MINUTE, INPUT);
-  digitalWrite(BUTTON_MINUTE, HIGH);
-  pinMode(BUTTON_HOUR, INPUT);
-  digitalWrite(BUTTON_HOUR, HIGH);
+  // Setup buttons
+  pinMode(MINUTE_PIN, INPUT_PULLUP);
+  pinMode(HOUR_PIN, INPUT_PULLUP);
+  minuteBtn.attach(MINUTE_PIN);
+  hourBtn.attach(HOUR_PIN);
+  minuteBtn.interval(30);
+  hourBtn.interval(30);
 }
 
 void readclock() {
@@ -78,29 +81,21 @@ void loop() {
   buttons();
 
   display.display();
-  display.clearDisplay();   // clears the screen and buffer
+  display.clearDisplay();
 }
 
 void buttons() {
-  minutebouncer.update();
-  if (minutebouncer.risingEdge()) {
-    minute = minute + 1;
-    if (minute > 59) minute = 0;
-
+  if (minuteBtn.update() && minuteBtn.read()) {
+    minute = (minute + 1) % 60;
     second = 0;
-
     game.setScore(hour, minute);
-
     setclock();
   }
 
-  hourbouncer.update();
-  if (hourbouncer.risingEdge()) {
+  if (minuteBtn.update() && minuteBtn.read()) {
     hour = hour + 1;
     if (hour > 12) hour = 1;
-
     game.setScore(hour, minute);
-
     setclock();
   }
 }
