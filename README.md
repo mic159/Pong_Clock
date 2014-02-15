@@ -11,7 +11,7 @@ Schematics and further details of the hardware can be found at his website: [0mi
 Requirements
 ------------
 
- * Bounce http://playground.arduino.cc/code/bounce
+ * Bounce2 https://github.com/thomasfredericks/Bounce-Arduino-Wiring
  * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
  * Adafriut SSD1306 https://github.com/adafruit/Adafruit_SSD1306
  * RTClib https://github.com/adafruit/RTClib
