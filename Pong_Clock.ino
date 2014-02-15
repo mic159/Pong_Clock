@@ -3,13 +3,18 @@
  * Original Code from https://github.com/rparrett/pongclock
  * Hardware adapted by KaR]V[aN, http://karman.cc
  *
+ * Requirements:
+ * Bounce http://playground.arduino.cc/code/bounce
+ * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
+ * Adafriut SSD1306 https://github.com/adafruit/Adafruit_SSD1306
+ * RTClib https://github.com/adafruit/RTClib
  */
 
 #include <Bounce.h>    // http://playground.arduino.cc/code/bounce
 #include <SPI.h>
 #include <Wire.h>
 #include <EEPROM.h>
-#include <RTClib.h> // https://github.com/adafruit/RTClib
+#include <RTClib.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
@@ -19,16 +24,13 @@
 
 #define OLED_RESET 4
 
-const int BUTTON_MINUTE = A1;  //11
-const int BUTTON_HOUR = A2;     //5
+const int BUTTON_MINUTE = A1;
+const int BUTTON_HOUR = A2;
 
 Bounce minutebouncer = Bounce(BUTTON_MINUTE, 20);
 Bounce hourbouncer = Bounce(BUTTON_HOUR, 20);
 Adafruit_SSD1306 display(OLED_RESET);
 RTC_DS1307 RTC;
-
-const int16_t h = 64;
-const int16_t w = 128;
 
 int16_t hour = 12;
 int16_t minute = 4;
@@ -39,10 +41,7 @@ PongGame game;
 
 void setup(void) 
 {
-  randomSeed(millis()*analogRead(0));
-  for (int i=0;i<255;i++)
-    random(0,random(255));
-   
+  randomSeed(analogRead(A3));
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
   display.setTextSize(2);
@@ -87,14 +86,14 @@ void buttons() {
   if (minutebouncer.risingEdge()) {
     minute = minute + 1;
     if (minute > 59) minute = 0;
-    
+
     second = 0;
-    
+
     game.setScore(hour, minute);
-    
+
     setclock();
   }
-  
+
   hourbouncer.update();
   if (hourbouncer.risingEdge()) {
     hour = hour + 1;
@@ -104,7 +103,6 @@ void buttons() {
 
     setclock();
   }
-  
 }
 
 void setclock() {
@@ -113,3 +111,4 @@ void setclock() {
   RTC.adjust(updated);
   RTC.begin();
 }
+
