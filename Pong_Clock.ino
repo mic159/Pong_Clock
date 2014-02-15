@@ -30,9 +30,6 @@ RTC_DS1307 RTC;
 const int16_t h = 64;
 const int16_t w = 128;
 
-int pause = 0;
-
-
 int16_t hour = 12;
 int16_t minute = 4;
 volatile int16_t second = 0;
