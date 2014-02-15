@@ -40,11 +40,8 @@ void PongGame::update(uint16_t hour, uint16_t minute) {
 
   if (hit) {
     // Wohoo, a score!
-    if (ball.x > WIDTH / 2) {
-      lscore += 1;
-    } else {
-      rscore += 1;
-    }
+    lscore = hour;
+    rscore = minute;
     // New game (ball on lpaddle)
     lpaddle.y = random(0, HEIGHT - lpaddle.h);
     ball.x = lpaddle.w;
@@ -76,6 +73,7 @@ void PongGame::drawScore(Adafruit_GFX& display) const {
 
   rscore_x = WIDTH / 2 + 10;
 
+  display.setTextSize(2);
   display.setTextColor(WHITE);
 
   display.setCursor(lscore_x, 4/2);
