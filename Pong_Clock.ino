@@ -19,9 +19,10 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#include "Paddle.h"
-#include "Ball.h"
 #include "PongGame.h"
+#include "Menu.h"
+#include "Menu_Settings.h"
+#include "Menu_Clockface.h"
 
 #define OLED_RESET 4
 
@@ -33,14 +34,20 @@ Bounce hourBtn;
 Adafruit_SSD1306 display(OLED_RESET);
 RTC_DS1307 RTC;
 
-int16_t hour;
-int16_t minute;
-int16_t second;
+Menu* menus[MENU_MAX];
+Menu_selection current = MENU_CLOCK;
 
-PongGame game;
+void switchMenu(Menu_selection s) {
+  current = s;
+  menus[current]->onEnter();
+}
 
+Menu* getMenu(Menu_selection s) {
+  return menus[s];
+}
 
 void setup(void) {
+  Serial.begin(9600);
   randomSeed(analogRead(A3));
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
@@ -49,9 +56,12 @@ void setup(void) {
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
   RTC.begin();
-  readclock();
 
-  game.setScore(hour, minute);
+  menus[MENU_CLOCK] = new ClockFaceMenu();
+  menus[MENU_SETTINGS] = new SettingsMenu();
+  menus[MENU_SETTINGS_24H] = new Settings24hMenu();
+
+  switchMenu(MENU_CLOCK);
 
   // Setup buttons
   pinMode(MINUTE_PIN, INPUT);
@@ -61,6 +71,7 @@ void setup(void) {
   minuteBtn.interval(30);
   hourBtn.interval(30);
 
+  // Splash
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(5, 20);
@@ -69,50 +80,29 @@ void setup(void) {
   display.setCursor(65, 56);
   display.println("by 0miker0");
   display.display();
-  delay(3000);
-}
-
-void readclock() {
-  DateTime now = RTC.now();
-
-  hour   = now.hour();
-  minute = now.minute();
-  second = now.second();
-
-  if (hour > 12) hour = hour - 12;
+  delay(2000);
 }
 
 void loop() {
   display.clearDisplay();
-  readclock();
-  game.update(hour, minute);
-  game.draw(display);
 
-  buttons();
+  if (minuteBtn.update() && minuteBtn.read()) {
+    menus[current]->button1();
+  }
+  if (hourBtn.update() && hourBtn.read()) {
+    menus[current]->button2();
+  }
+
+  menus[current]->update();
+  menus[current]->draw(display);
 
   display.display();
 }
-
-void buttons() {
-  if (minuteBtn.update() && minuteBtn.read()) {
-    minute = (minute + 1) % 60;
-    second = 0;
-    game.setScore(hour, minute);
-    setclock();
-  }
-
-  if (hourBtn.update() && hourBtn.read()) {
-    hour = hour + 1;
-    if (hour > 12) hour = 1;
-    game.setScore(hour, minute);
-    setclock();
-  }
-}
-
+/*
 void setclock() {
   DateTime now = RTC.now();
   DateTime updated = DateTime(now.year(), now.month(), now.day(), hour, minute, now.second());
   RTC.adjust(updated);
   RTC.begin();
-}
+}*/
 
