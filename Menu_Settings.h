@@ -27,4 +27,14 @@ public:
   virtual void draw(Adafruit_GFX& display) const;
 };
 
+class SettingsTimeMenu : public Menu {
+public:
+  SettingsTimeMenu();
+  virtual void update();
+  virtual void onEnter();
+  virtual void button1();
+  virtual void button2();
+  virtual void draw(Adafruit_GFX& display) const;
+};
+
 #endif
