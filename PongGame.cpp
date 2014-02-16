@@ -33,8 +33,8 @@ void PongGame::update(uint16_t hour, uint16_t minute) {
     return;
   }
 
-  lpaddle.update(ball.target_y, ball.dx, lscore != hour);
-  rpaddle.update(ball.target_y, ball.dx, rscore != minute);
+  lpaddle.update(ball.target_y, ball.dx, rscore != minute);
+  rpaddle.update(ball.target_y, ball.dx, lscore != hour);
 
   bool hit = ball.update(lpaddle, rpaddle);
 

@@ -11,7 +11,6 @@ Paddle::Paddle(int16_t x, int16_t y)
 {}
 
 void Paddle::update(int16_t target_y, int16_t ball_dx, bool should_miss) {
-  y = y + d;
   bool my_direction = false;
   // Check side
   if (x == 0) {
@@ -40,11 +39,13 @@ void Paddle::update(int16_t target_y, int16_t ball_dx, bool should_miss) {
     }
   }
 
-  if (y + h >= h && d == 1) {
+  if (y + h >= 64 && d == 1) {
     d = 0;
   } else if (y <= 0 && d == -1) {
     d = 0;
   }
+
+  y = y + d;
 }
 
 void Paddle::draw(Adafruit_GFX& display) const {

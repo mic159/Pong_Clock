@@ -45,13 +45,13 @@ void Ball::calcTarget() {
 
   calc_y = abs(target_x * (dy / dx) + y);
 
-  reflections = floor(calc_y / h);
+  reflections = floor(calc_y / 64);
 
   if (reflections % 2 == 0) {
-    target_y = calc_y % h;
+    target_y = calc_y % 64;
   } 
   else {
-    target_y = h - (calc_y % h);
+    target_y = 64 - (calc_y % 64);
   }
 }
 
