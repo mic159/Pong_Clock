@@ -2,12 +2,13 @@
 #define MENU_H
 
 #include <Arduino.h>
-#include <Adafriut_GFX.h>
+#include <Adafruit_GFX.h>
 
 enum Menu_selection {
   MENU_CLOCK,
   MENU_SETTINGS,
   MENU_SETTINGS_24H,
+  MENU_SETTINGS_TIME,
 
   MENU_MAX
 };

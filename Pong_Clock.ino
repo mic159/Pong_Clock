@@ -60,6 +60,7 @@ void setup(void) {
   menus[MENU_CLOCK] = new ClockFaceMenu();
   menus[MENU_SETTINGS] = new SettingsMenu();
   menus[MENU_SETTINGS_24H] = new Settings24hMenu();
+  menus[MENU_SETTINGS_TIME] = new SettingsTimeMenu();
 
   switchMenu(MENU_CLOCK);
 

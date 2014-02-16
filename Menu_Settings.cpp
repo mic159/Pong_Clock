@@ -1,7 +1,10 @@
 #include <Arduino.h>
+#include <stdio.h>
 #include <Adafruit_GFX.h>
 #include "Menu_Settings.h"
 #include "Menu_Clockface.h"
+
+extern RTC_DS1307 RTC;
 
 #define BLACK 0
 #define WHITE 1
@@ -30,6 +33,8 @@ void SettingsMenu::button2() {
   if (selection == ITEM_BACK) {
     selection = 0;
     switchMenu(MENU_CLOCK);
+  } else if (selection == ITEM_TIME) {
+    switchMenu(MENU_SETTINGS_TIME);
   } else if (selection == ITEM_24H) {
     switchMenu(MENU_SETTINGS_24H);
   }
@@ -88,5 +93,59 @@ void Settings24hMenu::draw(Adafruit_GFX& display) const {
     (128 / 2) + 5, 55,
     (128 / 2) - 5, 55,
     WHITE);
+}
+
+SettingsTimeMenu::SettingsTimeMenu()
+: last_check(0)
+{}
+void SettingsTimeMenu::update() {
+  if (millis() - last_check > 1000) {
+    last_check = millis();
+    now = RTC.now();
+  }
+}
+void SettingsTimeMenu::onEnter() {
+  last_check = millis();
+  now = RTC.now();
+}
+void SettingsTimeMenu::button1() {
+  selection = (selection + 1) % 4;
+}
+void SettingsTimeMenu::button2() {
+  if (selection == 3) {
+    switchMenu(MENU_SETTINGS);
+  } else {
+    ;
+  }
+}
+void SettingsTimeMenu::draw(Adafruit_GFX& display) const {
+  char buff[3];
+  display.setTextColor(WHITE);
+  display.setTextSize(2);
+  display.setCursor(5, 5);
+  sprintf(buff, "%01d", now.hour());
+  display.print(buff);
+  display.print(":");
+  sprintf(buff, "%01d", now.minute());
+  display.print(buff);
+  display.print(".");
+  sprintf(buff, "%01d", now.second());
+  display.print(buff);
+
+  if (selection < 3) {
+    display.fillTriangle(
+      10 + (selection * 10), 5,
+      15 + (selection * 10), 10,
+      5  + (selection * 10), 10,
+      WHITE);
+  }
+  if (selection == 3) {
+    display.setTextColor(BLACK, WHITE);
+  } else {
+    display.setTextColor(WHITE);
+  }
+  display.setTextSize(1);
+  display.setCursor(5, 40);
+  display.print("Back");
 }
 
