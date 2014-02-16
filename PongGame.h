@@ -10,11 +10,8 @@ public:
   PongGame();
 
   void setScore(uint16_t hour, uint16_t minute);
-
   void update(uint16_t hour, uint16_t minute);
-
   void draw(Adafruit_GFX& display) const;
-  
   void drawScore(Adafruit_GFX& display) const;
 private:
   Paddle lpaddle, rpaddle;
