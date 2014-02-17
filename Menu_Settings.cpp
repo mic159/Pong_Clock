@@ -25,9 +25,21 @@ enum Items {
 
 SettingsMenu::SettingsMenu()
 : selection(0)
+, last_check(0)
 {}
-bool SettingsMenu::update() {return false;}
+
+bool SettingsMenu::update() {
+  if (millis() - last_check > 1000) {
+    last_check = millis();
+    uint8_t minute = now.minute();
+    now = RTC.now();
+    return minute != now.minute();
+  }
+  return false;
+}
+
 void SettingsMenu::onEnter() {}
+
 void SettingsMenu::button1() {
   selection = (selection + 1) % ITEM_MAX;
 }
@@ -44,58 +56,124 @@ void SettingsMenu::button2() {
 }
 
 void SettingsMenu::draw(Adafruit_GFX& display) const {
-  display.setCursor(0, 0);
+  char buff[6];
+  // Border
+  display.drawRect(0, 0, WIDTH, HEIGHT, WHITE);
+
+  // Title
   display.setTextSize(1);
+  display.setCursor(2, 2);
+  display.setTextColor(WHITE);
+  display.print("Settings");
+  display.drawFastVLine(50, 0, 10, WHITE);
+  display.drawFastHLine(0, 10, 50, WHITE);
+
+  // Clock
+  display.fillRect(
+    WIDTH - 33, 0,
+    33, 10,
+    WHITE);
+  display.drawFastHLine(WIDTH - 32, 10, 32, WHITE);
+  display.setTextColor(BLACK, WHITE);
+  display.setCursor(WIDTH - 31, 2);
+  sprintf(buff, "%02d:%02d", now.hour(), now.minute());
+  display.print(buff);
+
+  // Menu Items
   for (uint8_t i = 0; i < ITEM_MAX; ++i) {
+    display.setCursor(5, 13 + (i * 10));
     if (selection == i) {
       display.setTextColor(BLACK, WHITE);
+      display.fillRect(
+        0    , 12 + (i * 10),
+        WIDTH, 9,
+        WHITE);
     } else {
       display.setTextColor(WHITE);
     }
     switch (i) {
     case ITEM_24H:
-      display.println("Set 12/24h mode");
+      display.print("Set 12/24h mode");
       break;
     case ITEM_TIME:
-      display.println("Set Date/Time");
+      display.print("Set Time");
       break;
     case ITEM_BACK:
-      display.println("Back");
+      display.print("Back");
       break;
     }
   }
 }
 
 // ---- Settings24hMenu ----
-Settings24hMenu::Settings24hMenu() {}
-bool Settings24hMenu::update() {return false;}
+Settings24hMenu::Settings24hMenu()
+: last_check(0)
+{}
+
+bool Settings24hMenu::update()  {
+  if (millis() - last_check > 1000) {
+    last_check = millis();
+    uint8_t minute = now.minute();
+    now = RTC.now();
+    return minute != now.minute();
+  }
+  return false;
+}
+
 void Settings24hMenu::onEnter() {}
+
 void Settings24hMenu::button1() {
   bool state = static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h;
   static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h = !state;
 }
+
 void Settings24hMenu::button2() {
   switchMenu(MENU_SETTINGS);
 }
+
 void Settings24hMenu::draw(Adafruit_GFX& display) const {
+  char buff[6];
   bool state = static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h;
+  // Border
+  display.drawRect(0, 0, WIDTH, HEIGHT, WHITE);
+
+  // Title
   display.setTextColor(WHITE);
-  display.setTextSize(3);
-  display.setCursor(40, 20);
+  display.setTextSize(1);
+  display.setCursor(2, 2);
+  display.print("12/24hr mode");
+  display.drawFastVLine(74, 0, 10, WHITE);
+  display.drawFastHLine(0, 10, 74, WHITE);
+
+  // Clock
+  display.fillRect(
+    WIDTH - 33, 0,
+    33, 10,
+    WHITE);
+  display.drawFastHLine(WIDTH - 32, 10, 32, WHITE);
+  display.setTextColor(BLACK, WHITE);
+  display.setCursor(WIDTH - 31, 2);
+  sprintf(buff, "%02d:%02d", now.hour(), now.minute());
+  display.print(buff);
+
+  // Selector
+  display.setTextColor(WHITE);
+  display.setTextSize(2);
+  display.setCursor(40, 23);
   if (state) {
     display.print("12hr");
   } else {
     display.print("24hr");
   }
   display.fillTriangle(
-    (128 / 2)    , 5, 
-    (128 / 2) + 5, 10,
-    (128 / 2) - 5, 10,
+    (WIDTH / 2)    , 15,
+    (WIDTH / 2) + 5, 20,
+    (WIDTH / 2) - 5, 20,
     WHITE);
   display.fillTriangle(
-    (128 / 2)    , 60, 
-    (128 / 2) + 5, 55,
-    (128 / 2) - 5, 55,
+    (WIDTH / 2)    , 45,
+    (WIDTH / 2) + 5, 40,
+    (WIDTH / 2) - 5, 40,
     WHITE);
 }
 
@@ -104,6 +182,7 @@ SettingsTimeMenu::SettingsTimeMenu()
 : last_check(0)
 , selection(0)
 {}
+
 bool SettingsTimeMenu::update() {
   if (millis() - last_check > 1000) {
     last_check = millis();
@@ -112,14 +191,15 @@ bool SettingsTimeMenu::update() {
   }
   return false;
 }
+
 void SettingsTimeMenu::onEnter() {
-  last_check = millis();
-  now = RTC.now();
   selection = 0;
 }
+
 void SettingsTimeMenu::button1() {
   selection = (selection + 1) % 5;
 }
+
 void SettingsTimeMenu::button2() {
   if (selection == 4) {
     switchMenu(MENU_SETTINGS);
@@ -140,19 +220,31 @@ void SettingsTimeMenu::button2() {
     RTC.adjust(now);
   }
 }
+
 void SettingsTimeMenu::draw(Adafruit_GFX& display) const {
   char buff[9];
+  // Border
+  display.drawRect(0, 0, WIDTH, HEIGHT, WHITE);
+
+  // Title
   display.setTextColor(WHITE);
+  display.setTextSize(1);
+  display.setCursor(2, 2);
+  display.print("Set Time");
+  display.drawFastVLine(50, 0, 10, WHITE);
+  display.drawFastHLine(0, 10, 50, WHITE);
+
+  // Time
   display.setTextSize(2);
-  display.setCursor(20, 20);
+  display.setCursor(20, 23);
   sprintf(buff, "%02d:%02d.%02d", now.hour(), now.minute(), now.second());
   display.print(buff);
 
   if (selection < 2) {
     display.fillTriangle(
-      30 + (selection * 35), 5,
-      35 + (selection * 35), 10,
-      25 + (selection * 35), 10,
+      30 + (selection * 35), 15,
+      35 + (selection * 35), 20,
+      25 + (selection * 35), 20,
       WHITE);
   } else if (selection < 4) {
     display.fillTriangle(
@@ -162,13 +254,13 @@ void SettingsTimeMenu::draw(Adafruit_GFX& display) const {
       WHITE);
   }
   if (selection == 4) {
-    display.fillRect(0, 55, WIDTH, HEIGHT, WHITE);
+    display.fillRect(0, 53, WIDTH, 10, WHITE);
     display.setTextColor(BLACK, WHITE);
   } else {
     display.setTextColor(WHITE);
   }
   display.setTextSize(1);
-  display.setCursor(5, 56);
+  display.setCursor(5, 54);
   display.print("Back");
 }
 

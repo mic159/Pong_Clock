@@ -15,7 +15,8 @@ public:
   virtual void draw(Adafruit_GFX& display) const;
 protected:
   uint8_t selection;
-  uint8_t _max;
+  DateTime now;
+  unsigned long last_check;
 };
 
 class Settings24hMenu : public Menu {
@@ -26,6 +27,9 @@ public:
   virtual void button1();
   virtual void button2();
   virtual void draw(Adafruit_GFX& display) const;
+private:
+  DateTime now;
+  unsigned long last_check;
 };
 
 class SettingsTimeMenu : public Menu {
