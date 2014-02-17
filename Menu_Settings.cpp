@@ -161,9 +161,9 @@ void Settings24hMenu::draw(Adafruit_GFX& display) const {
   display.setTextSize(2);
   display.setCursor(40, 23);
   if (state) {
-    display.print("12hr");
-  } else {
     display.print("24hr");
+  } else {
+    display.print("12hr");
   }
   display.fillTriangle(
     (WIDTH / 2)    , 15,
