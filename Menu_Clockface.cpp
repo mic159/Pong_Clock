@@ -6,10 +6,12 @@
 
 extern RTC_DS1307 RTC;
 
-ClockFaceMenu::ClockFaceMenu() {
+ClockFaceMenu::ClockFaceMenu()
+: mode24h(false)
+, last_check(0)
+, now(0)
+{
   face = new PongGame();
-  mode24h = false;
-  last_check = 0;
 }
 void ClockFaceMenu::onEnter() {
   now = RTC.now();
@@ -33,7 +35,7 @@ bool ClockFaceMenu::update() {
   face->update(hour, now.minute());
   return true;
 }
-void ClockFaceMenu::draw(Adafruit_GFX& display) const {
+void ClockFaceMenu::draw(Adafruit_GFX* display) const {
   face->draw(display);
 }
 void ClockFaceMenu::button1() {

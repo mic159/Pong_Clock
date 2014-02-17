@@ -11,7 +11,7 @@ public:
   ClockFaceMenu();
   virtual void onEnter();
   virtual bool update();
-  virtual void draw(Adafruit_GFX& display) const;
+  virtual void draw(Adafruit_GFX* display) const;
   virtual void button1();
   virtual void button2();
 

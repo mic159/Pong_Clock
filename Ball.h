@@ -9,7 +9,7 @@ struct Ball {
   
   bool update(const Paddle& lpaddle, const Paddle& rpaddle);
   void calcTarget();
-  void draw(Adafruit_GFX& display) const;
+  void draw(Adafruit_GFX* display) const;
 
   int16_t x, y, w, h;
   int16_t dx, dy;

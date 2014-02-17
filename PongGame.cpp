@@ -52,18 +52,18 @@ void PongGame::update(uint16_t hour, uint16_t minute) {
   }
 }
 
-void PongGame::draw(Adafruit_GFX& display) const {
+void PongGame::draw(Adafruit_GFX* display) const {
   lpaddle.draw(display);
   rpaddle.draw(display);
   // Middle line
   for(uint8_t i = 0; i < HEIGHT / 4; i = i + 2) {
-    display.fillRect(WIDTH / 2 - 1, i * 4, 2, 4, WHITE);
+    display->fillRect(WIDTH / 2 - 1, i * 4, 2, 4, WHITE);
   }
   drawScore(display);
   ball.draw(display);
 }
 
-void PongGame::drawScore(Adafruit_GFX& display) const {
+void PongGame::drawScore(Adafruit_GFX* display) const {
   int lscore_x, rscore_x;
   static const int font_w = 10;
   static const int font_sp = 4;
@@ -73,13 +73,13 @@ void PongGame::drawScore(Adafruit_GFX& display) const {
 
   rscore_x = WIDTH / 2 + 10;
 
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
+  display->setTextSize(2);
+  display->setTextColor(WHITE);
 
-  display.setCursor(lscore_x, 4/2);
-  display.println(lscore);
+  display->setCursor(lscore_x, 4/2);
+  display->println(lscore);
 
-  display.setCursor(rscore_x, 4/2);
-  display.println(rscore);
+  display->setCursor(rscore_x, 4/2);
+  display->println(rscore);
 }
 

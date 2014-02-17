@@ -25,6 +25,7 @@ enum Items {
 
 SettingsMenu::SettingsMenu()
 : selection(0)
+, now(0)
 , last_check(0)
 {}
 
@@ -55,51 +56,51 @@ void SettingsMenu::button2() {
   }
 }
 
-void SettingsMenu::draw(Adafruit_GFX& display) const {
+void SettingsMenu::draw(Adafruit_GFX* display) const {
   char buff[6];
   // Border
-  display.drawRect(0, 0, WIDTH, HEIGHT, WHITE);
+  display->drawRect(0, 0, WIDTH, HEIGHT, WHITE);
 
   // Title
-  display.setTextSize(1);
-  display.setCursor(2, 2);
-  display.setTextColor(WHITE);
-  display.print("Settings");
-  display.drawFastVLine(50, 0, 10, WHITE);
-  display.drawFastHLine(0, 10, 50, WHITE);
+  display->setTextSize(1);
+  display->setCursor(2, 2);
+  display->setTextColor(WHITE);
+  display->print("Settings");
+  display->drawFastVLine(50, 0, 10, WHITE);
+  display->drawFastHLine(0, 10, 50, WHITE);
 
   // Clock
-  display.fillRect(
+  display->fillRect(
     WIDTH - 33, 0,
     33, 10,
     WHITE);
-  display.drawFastHLine(WIDTH - 32, 10, 32, WHITE);
-  display.setTextColor(BLACK, WHITE);
-  display.setCursor(WIDTH - 31, 2);
-  sprintf(buff, "%02d:%02d", now.hour(), now.minute());
-  display.print(buff);
+  display->drawFastHLine(WIDTH - 32, 10, 32, WHITE);
+  display->setTextColor(BLACK, WHITE);
+  display->setCursor(WIDTH - 31, 2);
+  snprintf(buff, 6, "%02d:%02d", now.hour(), now.minute());
+  display->print(buff);
 
   // Menu Items
   for (uint8_t i = 0; i < ITEM_MAX; ++i) {
-    display.setCursor(5, 13 + (i * 10));
+    display->setCursor(5, 13 + (i * 10));
     if (selection == i) {
-      display.setTextColor(BLACK, WHITE);
-      display.fillRect(
+      display->setTextColor(BLACK, WHITE);
+      display->fillRect(
         0    , 12 + (i * 10),
         WIDTH, 9,
         WHITE);
     } else {
-      display.setTextColor(WHITE);
+      display->setTextColor(WHITE);
     }
     switch (i) {
     case ITEM_24H:
-      display.print("Set 12/24h mode");
+      display->print("Set 12/24h mode");
       break;
     case ITEM_TIME:
-      display.print("Set Time");
+      display->print("Set Time");
       break;
     case ITEM_BACK:
-      display.print("Back");
+      display->print("Back");
       break;
     }
   }
@@ -107,7 +108,8 @@ void SettingsMenu::draw(Adafruit_GFX& display) const {
 
 // ---- Settings24hMenu ----
 Settings24hMenu::Settings24hMenu()
-: last_check(0)
+: now(0)
+, last_check(0)
 {}
 
 bool Settings24hMenu::update()  {
@@ -131,46 +133,46 @@ void Settings24hMenu::button2() {
   switchMenu(MENU_SETTINGS);
 }
 
-void Settings24hMenu::draw(Adafruit_GFX& display) const {
+void Settings24hMenu::draw(Adafruit_GFX* display) const {
   char buff[6];
   bool state = static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h;
   // Border
-  display.drawRect(0, 0, WIDTH, HEIGHT, WHITE);
+  display->drawRect(0, 0, WIDTH, HEIGHT, WHITE);
 
   // Title
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(2, 2);
-  display.print("12/24hr mode");
-  display.drawFastVLine(74, 0, 10, WHITE);
-  display.drawFastHLine(0, 10, 74, WHITE);
+  display->setTextColor(WHITE);
+  display->setTextSize(1);
+  display->setCursor(2, 2);
+  display->print("12/24hr mode");
+  display->drawFastVLine(74, 0, 10, WHITE);
+  display->drawFastHLine(0, 10, 74, WHITE);
 
   // Clock
-  display.fillRect(
+  display->fillRect(
     WIDTH - 33, 0,
     33, 10,
     WHITE);
-  display.drawFastHLine(WIDTH - 32, 10, 32, WHITE);
-  display.setTextColor(BLACK, WHITE);
-  display.setCursor(WIDTH - 31, 2);
-  sprintf(buff, "%02d:%02d", now.hour(), now.minute());
-  display.print(buff);
+  display->drawFastHLine(WIDTH - 32, 10, 32, WHITE);
+  display->setTextColor(BLACK, WHITE);
+  display->setCursor(WIDTH - 31, 2);
+  snprintf(buff, 6, "%02d:%02d", now.hour(), now.minute());
+  display->print(buff);
 
   // Selector
-  display.setTextColor(WHITE);
-  display.setTextSize(2);
-  display.setCursor(40, 23);
+  display->setTextColor(WHITE);
+  display->setTextSize(2);
+  display->setCursor(40, 23);
   if (state) {
-    display.print("24hr");
+    display->print("24hr");
   } else {
-    display.print("12hr");
+    display->print("12hr");
   }
-  display.fillTriangle(
+  display->fillTriangle(
     (WIDTH / 2)    , 15,
     (WIDTH / 2) + 5, 20,
     (WIDTH / 2) - 5, 20,
     WHITE);
-  display.fillTriangle(
+  display->fillTriangle(
     (WIDTH / 2)    , 45,
     (WIDTH / 2) + 5, 40,
     (WIDTH / 2) - 5, 40,
@@ -179,7 +181,8 @@ void Settings24hMenu::draw(Adafruit_GFX& display) const {
 
 // ---- SettingsTimeMenu ----
 SettingsTimeMenu::SettingsTimeMenu()
-: last_check(0)
+: now(0)
+, last_check(0)
 , selection(0)
 {}
 
@@ -221,46 +224,46 @@ void SettingsTimeMenu::button2() {
   }
 }
 
-void SettingsTimeMenu::draw(Adafruit_GFX& display) const {
+void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
   char buff[9];
   // Border
-  display.drawRect(0, 0, WIDTH, HEIGHT, WHITE);
+  display->drawRect(0, 0, WIDTH, HEIGHT, WHITE);
 
   // Title
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(2, 2);
-  display.print("Set Time");
-  display.drawFastVLine(50, 0, 10, WHITE);
-  display.drawFastHLine(0, 10, 50, WHITE);
+  display->setTextColor(WHITE);
+  display->setTextSize(1);
+  display->setCursor(2, 2);
+  display->print("Set Time");
+  display->drawFastVLine(50, 0, 10, WHITE);
+  display->drawFastHLine(0, 10, 50, WHITE);
 
   // Time
-  display.setTextSize(2);
-  display.setCursor(20, 23);
-  sprintf(buff, "%02d:%02d.%02d", now.hour(), now.minute(), now.second());
-  display.print(buff);
+  display->setTextSize(2);
+  display->setCursor(20, 23);
+  snprintf(buff, 9, "%02d:%02d", now.hour(), now.minute());
+  display->print(buff);
 
   if (selection < 2) {
-    display.fillTriangle(
+    display->fillTriangle(
       30 + (selection * 35), 15,
       35 + (selection * 35), 20,
       25 + (selection * 35), 20,
       WHITE);
   } else if (selection < 4) {
-    display.fillTriangle(
+    display->fillTriangle(
       30 + ((selection - 2) * 35), 45,
       35 + ((selection - 2) * 35), 40,
       25 + ((selection - 2) * 35), 40,
       WHITE);
   }
   if (selection == 4) {
-    display.fillRect(0, 53, WIDTH, 10, WHITE);
-    display.setTextColor(BLACK, WHITE);
+    display->fillRect(0, 53, WIDTH, 10, WHITE);
+    display->setTextColor(BLACK, WHITE);
   } else {
-    display.setTextColor(WHITE);
+    display->setTextColor(WHITE);
   }
-  display.setTextSize(1);
-  display.setCursor(5, 54);
-  display.print("Back");
+  display->setTextSize(1);
+  display->setCursor(5, 54);
+  display->print("Back");
 }
 

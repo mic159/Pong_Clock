@@ -12,7 +12,7 @@ public:
   virtual void onEnter();
   virtual void button1();
   virtual void button2();
-  virtual void draw(Adafruit_GFX& display) const;
+  virtual void draw(Adafruit_GFX* display) const;
 protected:
   uint8_t selection;
   DateTime now;
@@ -26,7 +26,7 @@ public:
   virtual void onEnter();
   virtual void button1();
   virtual void button2();
-  virtual void draw(Adafruit_GFX& display) const;
+  virtual void draw(Adafruit_GFX* display) const;
 private:
   DateTime now;
   unsigned long last_check;
@@ -39,7 +39,7 @@ public:
   virtual void onEnter();
   virtual void button1();
   virtual void button2();
-  virtual void draw(Adafruit_GFX& display) const;
+  virtual void draw(Adafruit_GFX* display) const;
 private:
   DateTime now;
   unsigned long last_check;

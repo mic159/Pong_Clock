@@ -48,7 +48,7 @@ void Paddle::update(int16_t target_y, int16_t ball_dx, bool should_miss) {
   y = y + d;
 }
 
-void Paddle::draw(Adafruit_GFX& display) const {
-  display.fillRect(x, y, w, h, WHITE);
+void Paddle::draw(Adafruit_GFX* display) const {
+  display->fillRect(x, y, w, h, WHITE);
 }
 

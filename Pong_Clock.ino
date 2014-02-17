@@ -34,10 +34,11 @@ Bounce btn2;
 Adafruit_SSD1306 display(OLED_RESET);
 RTC_DS1307 RTC;
 
-Menu* menus[MENU_MAX];
+Menu* menus[MENU_MAX] = {};
 Menu_selection current = MENU_CLOCK;
 
 void switchMenu(Menu_selection s) {
+  if (s >= MENU_MAX || menus[s] == NULL) return;
   current = s;
   menus[current]->onEnter();
 }
@@ -109,7 +110,7 @@ void loop() {
   // Display
   if (draw) {
     display.clearDisplay();
-    menus[current]->draw(display);
+    menus[current]->draw(&display);
     display.display();
   }
 }

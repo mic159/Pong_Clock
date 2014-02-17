@@ -55,7 +55,7 @@ void Ball::calcTarget() {
   }
 }
 
-void Ball::draw(Adafruit_GFX& display) const {
-  display.fillRect(x, y, w, h, WHITE);
+void Ball::draw(Adafruit_GFX* display) const {
+  display->fillRect(x, y, w, h, WHITE);
 }
 
