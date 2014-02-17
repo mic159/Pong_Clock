@@ -4,11 +4,17 @@
 #include "Menu_Settings.h"
 #include "Menu_Clockface.h"
 
+// Grab RTC instance from .ino
 extern RTC_DS1307 RTC;
 
+// Some graphics constants
 #define BLACK 0
 #define WHITE 1
+#define WIDTH 128
+#define HEIGHT 64
 
+// ---- SettingsMenu ----
+// Menu items for SettingsMenu
 enum Items {
   ITEM_24H,
   ITEM_TIME,
@@ -63,6 +69,7 @@ void SettingsMenu::draw(Adafruit_GFX& display) const {
   }
 }
 
+// ---- Settings24hMenu ----
 Settings24hMenu::Settings24hMenu() {}
 void Settings24hMenu::update() {}
 void Settings24hMenu::onEnter() {}
@@ -77,7 +84,7 @@ void Settings24hMenu::draw(Adafruit_GFX& display) const {
   bool state = static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h;
   display.setTextColor(WHITE);
   display.setTextSize(3);
-  display.setCursor(5, 20);
+  display.setCursor(40, 20);
   if (state) {
     display.print("12hr");
   } else {
@@ -95,8 +102,10 @@ void Settings24hMenu::draw(Adafruit_GFX& display) const {
     WHITE);
 }
 
+// ---- SettingsTimeMenu ----
 SettingsTimeMenu::SettingsTimeMenu()
 : last_check(0)
+, selection(0)
 {}
 void SettingsTimeMenu::update() {
   if (millis() - last_check > 1000) {
@@ -107,45 +116,59 @@ void SettingsTimeMenu::update() {
 void SettingsTimeMenu::onEnter() {
   last_check = millis();
   now = RTC.now();
+  selection = 0;
 }
 void SettingsTimeMenu::button1() {
-  selection = (selection + 1) % 4;
+  selection = (selection + 1) % 5;
 }
 void SettingsTimeMenu::button2() {
-  if (selection == 3) {
+  if (selection == 4) {
     switchMenu(MENU_SETTINGS);
   } else {
-    ;
+    uint8_t hour = now.hour();
+    uint8_t minute = now.minute();
+    if (selection == 0) {
+      hour = (hour + 1) % 24;
+    } else if (selection == 1) {
+      minute = (minute + 1) % 60;
+    } else if (selection == 2) {
+      hour = hour == 0 ? 23 : (hour - 1);
+    } else if (selection == 3) {
+      minute = minute == 0 ? 59 : (minute - 1);
+    }
+    now = DateTime(now.year(), now.month(), now.day(), hour, minute, 0);
+    RTC.adjust(now);
   }
 }
 void SettingsTimeMenu::draw(Adafruit_GFX& display) const {
-  char buff[3];
+  char buff[9];
   display.setTextColor(WHITE);
   display.setTextSize(2);
-  display.setCursor(5, 5);
-  sprintf(buff, "%01d", now.hour());
-  display.print(buff);
-  display.print(":");
-  sprintf(buff, "%01d", now.minute());
-  display.print(buff);
-  display.print(".");
-  sprintf(buff, "%01d", now.second());
+  display.setCursor(20, 20);
+  sprintf(buff, "%02d:%02d.%02d", now.hour(), now.minute(), now.second());
   display.print(buff);
 
-  if (selection < 3) {
+  if (selection < 2) {
     display.fillTriangle(
-      10 + (selection * 10), 5,
-      15 + (selection * 10), 10,
-      5  + (selection * 10), 10,
+      30 + (selection * 35), 5,
+      35 + (selection * 35), 10,
+      25 + (selection * 35), 10,
+      WHITE);
+  } else if (selection < 4) {
+    display.fillTriangle(
+      30 + ((selection - 2) * 35), 45,
+      35 + ((selection - 2) * 35), 40,
+      25 + ((selection - 2) * 35), 40,
       WHITE);
   }
-  if (selection == 3) {
+  if (selection == 4) {
+    display.fillRect(0, 55, 128, 64, WHITE);
     display.setTextColor(BLACK, WHITE);
   } else {
     display.setTextColor(WHITE);
   }
   display.setTextSize(1);
-  display.setCursor(5, 40);
+  display.setCursor(5, 56);
   display.print("Back");
 }
 
