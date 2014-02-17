@@ -8,7 +8,7 @@
 class SettingsMenu : public Menu {
 public:
   SettingsMenu();
-  virtual void update();
+  virtual bool update();
   virtual void onEnter();
   virtual void button1();
   virtual void button2();
@@ -21,7 +21,7 @@ protected:
 class Settings24hMenu : public Menu {
 public:
   Settings24hMenu();
-  virtual void update();
+  virtual bool update();
   virtual void onEnter();
   virtual void button1();
   virtual void button2();
@@ -31,7 +31,7 @@ public:
 class SettingsTimeMenu : public Menu {
 public:
   SettingsTimeMenu();
-  virtual void update();
+  virtual bool update();
   virtual void onEnter();
   virtual void button1();
   virtual void button2();

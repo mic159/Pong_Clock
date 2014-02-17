@@ -29,8 +29,8 @@
 const int MINUTE_PIN = A1;
 const int HOUR_PIN = A2;
 
-Bounce minuteBtn;
-Bounce hourBtn;
+Bounce btn1;
+Bounce btn2;
 Adafruit_SSD1306 display(OLED_RESET);
 RTC_DS1307 RTC;
 
@@ -52,25 +52,24 @@ void setup(void) {
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
   display.clearDisplay();
+
+  // First time init, set to code compile date.
   if (!RTC.isrunning()) {
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
-  RTC.begin();
 
   menus[MENU_CLOCK] = new ClockFaceMenu();
   menus[MENU_SETTINGS] = new SettingsMenu();
   menus[MENU_SETTINGS_24H] = new Settings24hMenu();
   menus[MENU_SETTINGS_TIME] = new SettingsTimeMenu();
 
-  switchMenu(MENU_CLOCK);
-
   // Setup buttons
   pinMode(MINUTE_PIN, INPUT);
   pinMode(HOUR_PIN, INPUT);
-  minuteBtn.attach(MINUTE_PIN);
-  hourBtn.attach(HOUR_PIN);
-  minuteBtn.interval(30);
-  hourBtn.interval(30);
+  btn1.attach(MINUTE_PIN);
+  btn2.attach(HOUR_PIN);
+  btn1.interval(30);
+  btn2.interval(30);
 
   // Splash
   display.setTextSize(2);
@@ -82,28 +81,36 @@ void setup(void) {
   display.println("by 0miker0");
   display.display();
   delay(2000);
+
+  switchMenu(MENU_CLOCK);
 }
 
 void loop() {
-  display.clearDisplay();
+  // As an optimisation, we only draw the display
+  // when we really need to. Drawing the display
+  // every time is wasteful if nothing has changed.
+  bool draw = false;
 
-  if (minuteBtn.update() && minuteBtn.read()) {
+  // Buttons
+  if (btn1.update() && btn1.read()) {
     menus[current]->button1();
+    draw = true;
   }
-  if (hourBtn.update() && hourBtn.read()) {
+  if (btn2.update() && btn2.read()) {
     menus[current]->button2();
+    draw = true;
   }
 
-  menus[current]->update();
-  menus[current]->draw(display);
+  // Update
+  if(menus[current]->update()) {
+    draw = true;
+  }
 
-  display.display();
+  // Display
+  if (draw) {
+    display.clearDisplay();
+    menus[current]->draw(display);
+    display.display();
+  }
 }
-/*
-void setclock() {
-  DateTime now = RTC.now();
-  DateTime updated = DateTime(now.year(), now.month(), now.day(), hour, minute, now.second());
-  RTC.adjust(updated);
-  RTC.begin();
-}*/
 

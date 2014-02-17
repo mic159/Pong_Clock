@@ -26,11 +26,8 @@ enum Items {
 SettingsMenu::SettingsMenu()
 : selection(0)
 {}
-
-void SettingsMenu::update() {}
-
+bool SettingsMenu::update() {return false;}
 void SettingsMenu::onEnter() {}
-
 void SettingsMenu::button1() {
   selection = (selection + 1) % ITEM_MAX;
 }
@@ -71,7 +68,7 @@ void SettingsMenu::draw(Adafruit_GFX& display) const {
 
 // ---- Settings24hMenu ----
 Settings24hMenu::Settings24hMenu() {}
-void Settings24hMenu::update() {}
+bool Settings24hMenu::update() {return false;}
 void Settings24hMenu::onEnter() {}
 void Settings24hMenu::button1() {
   bool state = static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h;
@@ -107,11 +104,13 @@ SettingsTimeMenu::SettingsTimeMenu()
 : last_check(0)
 , selection(0)
 {}
-void SettingsTimeMenu::update() {
+bool SettingsTimeMenu::update() {
   if (millis() - last_check > 1000) {
     last_check = millis();
     now = RTC.now();
+    return true;
   }
+  return false;
 }
 void SettingsTimeMenu::onEnter() {
   last_check = millis();
@@ -137,6 +136,7 @@ void SettingsTimeMenu::button2() {
       minute = minute == 0 ? 59 : (minute - 1);
     }
     now = DateTime(now.year(), now.month(), now.day(), hour, minute, 0);
+    last_check = millis();
     RTC.adjust(now);
   }
 }
@@ -162,7 +162,7 @@ void SettingsTimeMenu::draw(Adafruit_GFX& display) const {
       WHITE);
   }
   if (selection == 4) {
-    display.fillRect(0, 55, 128, 64, WHITE);
+    display.fillRect(0, 55, WIDTH, HEIGHT, WHITE);
     display.setTextColor(BLACK, WHITE);
   } else {
     display.setTextColor(WHITE);
