@@ -195,7 +195,8 @@ void SettingsTimeMenu::button2() {
       minute = minute == 0 ? 59 : (minute - 1);
     }
     state.now = DateTime(state.now.year(), state.now.month(), state.now.day(), hour, minute, 0);
-    last_check = millis();
+    state.timeUpdated = true;
+    state.timeMinuteUpdated = true;
     RTC.adjust(state.now);
   }
 }
