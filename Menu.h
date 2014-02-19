@@ -15,6 +15,7 @@ enum Menu_selection {
 
 class Menu {
 public:
+  virtual ~Menu() {}
   virtual bool update() = 0;
   virtual void onEnter() = 0;
   virtual void draw(Adafruit_GFX* display) const = 0;
