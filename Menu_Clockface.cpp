@@ -3,36 +3,30 @@
 #include <Adafruit_GFX.h>
 #include "Menu_Clockface.h"
 #include "Menu.h"
+#include "State.h"
 
-extern RTC_DS1307 RTC;
-
-ClockFaceMenu::ClockFaceMenu()
-: mode24h(false)
-, last_check(0)
-, now(0)
-{
+ClockFaceMenu::ClockFaceMenu() {
   face = new PongGame();
 }
+
+ClockFaceMenu::~ClockFaceMenu() {
+  delete face;
+}
+
 void ClockFaceMenu::onEnter() {
-  now = RTC.now();
-  last_check = millis();
-  uint8_t hour = now.hour();
-  if (!mode24h && hour > 12) {
+  uint8_t hour = state.now.hour();
+  if (!state.mode24h && hour > 12) {
     hour = hour - 12;
   }
-  face->setScore(hour, now.minute());
+  face->setScore(hour, state.now.minute());
 }
 bool ClockFaceMenu::update() {
-  // Read RTC only once per second.
-  if (millis() - last_check > 1000) {
-    last_check = millis();
-    now = RTC.now();
-  }
-  uint8_t hour = now.hour();
-  if (!mode24h && hour > 12) {
+  uint8_t hour = state.now.hour();
+  if (!state.mode24h && hour > 12) {
     hour = hour - 12;
   }
-  face->update(hour, now.minute());
+  face->update(hour, state.now.minute());
+  // Always render
   return true;
 }
 void ClockFaceMenu::draw(Adafruit_GFX* display) const {

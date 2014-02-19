@@ -22,6 +22,7 @@
 #include "Menu.h"
 #include "Menu_Settings.h"
 #include "Menu_Clockface.h"
+#include "State.h"
 
 #define OLED_RESET 4
 #define MINUTE_PIN A1
@@ -32,17 +33,31 @@ Bounce btn2;
 Adafruit_SSD1306 display(OLED_RESET);
 RTC_DS1307 RTC;
 
-Menu* menus[MENU_MAX] = {};
-Menu_selection current = MENU_CLOCK;
+State state;
+Menu* menu = NULL;
 
 void switchMenu(Menu_selection s) {
-  if (s >= MENU_MAX || menus[s] == NULL) return;
-  current = s;
-  menus[current]->onEnter();
-}
-
-Menu* getMenu(Menu_selection s) {
-  return menus[s];
+  if (s >= MENU_MAX) return;
+  if (menu) {
+    delete menu;
+    menu = NULL;
+  }
+  switch(s) {
+    case MENU_SETTINGS:
+      menu = new SettingsMenu();
+      break;
+    case MENU_SETTINGS_24H:
+      menu = new Settings24hMenu();
+      break;
+    case MENU_SETTINGS_TIME:
+      menu = new SettingsTimeMenu();
+      break;
+    case MENU_CLOCK:
+    default:
+      menu = new ClockFaceMenu();
+      break;
+  }
+  menu->onEnter();
 }
 
 void setup(void) {
@@ -56,11 +71,6 @@ void setup(void) {
   if (!RTC.isrunning()) {
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
-
-  menus[MENU_CLOCK] = new ClockFaceMenu();
-  menus[MENU_SETTINGS] = new SettingsMenu();
-  //menus[MENU_SETTINGS_24H] = new Settings24hMenu();
-  menus[MENU_SETTINGS_TIME] = new SettingsTimeMenu();
 
   // Setup buttons
   pinMode(MINUTE_PIN, INPUT);
@@ -81,6 +91,7 @@ void setup(void) {
   display.display();
   delay(2000);
 
+  state.update();
   switchMenu(MENU_CLOCK);
 }
 
@@ -92,23 +103,24 @@ void loop() {
 
   // Buttons
   if (btn1.update() && btn1.read()) {
-    menus[current]->button1();
+    menu->button1();
     draw = true;
   }
   if (btn2.update() && btn2.read()) {
-    menus[current]->button2();
+    menu->button2();
     draw = true;
   }
 
   // Update
-  if(menus[current]->update()) {
+  state.update();
+  if(menu->update()) {
     draw = true;
   }
 
   // Display
   if (draw) {
     display.clearDisplay();
-    menus[current]->draw(&display);
+    menu->draw(&display);
     display.display();
   }
 }

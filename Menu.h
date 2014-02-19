@@ -23,6 +23,5 @@ public:
 };
 
 void switchMenu(Menu_selection);
-Menu* getMenu(Menu_selection);
 
 #endif

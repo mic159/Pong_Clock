@@ -3,6 +3,7 @@
 #include <Adafruit_GFX.h>
 #include "Menu_Settings.h"
 #include "Menu_Clockface.h"
+#include "State.h"
 
 // Grab RTC instance from .ino
 extern RTC_DS1307 RTC;
@@ -25,18 +26,10 @@ enum Items {
 
 SettingsMenu::SettingsMenu()
 : selection(0)
-, now(0)
-, last_check(0)
 {}
 
 bool SettingsMenu::update() {
-  if (millis() - last_check > 1000) {
-    last_check = millis();
-    uint8_t minute = now.minute();
-    now = RTC.now();
-    return minute != now.minute();
-  }
-  return false;
+  return state.timeMinuteUpdated;
 }
 
 void SettingsMenu::onEnter() {}
@@ -77,7 +70,7 @@ void SettingsMenu::draw(Adafruit_GFX* display) const {
   display->drawFastHLine(WIDTH - 32, 10, 32, WHITE);
   display->setTextColor(BLACK, WHITE);
   display->setCursor(WIDTH - 31, 2);
-  snprintf(buff, 6, "%02d:%02d", now.hour(), now.minute());
+  snprintf(buff, 6, "%02d:%02d", state.now.hour(), state.now.minute());
   display->print(buff);
 
   // Menu Items
@@ -107,26 +100,16 @@ void SettingsMenu::draw(Adafruit_GFX* display) const {
 }
 
 // ---- Settings24hMenu ----
-Settings24hMenu::Settings24hMenu()
-: now(0)
-, last_check(0)
-{}
+Settings24hMenu::Settings24hMenu() {}
 
 bool Settings24hMenu::update()  {
-  if (millis() - last_check > 1000) {
-    last_check = millis();
-    uint8_t minute = now.minute();
-    now = RTC.now();
-    return minute != now.minute();
-  }
-  return false;
+  return state.timeMinuteUpdated;
 }
 
 void Settings24hMenu::onEnter() {}
 
 void Settings24hMenu::button1() {
-  bool state = static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h;
-  static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h = !state;
+  state.mode24h = !state.mode24h;
 }
 
 void Settings24hMenu::button2() {
@@ -135,7 +118,6 @@ void Settings24hMenu::button2() {
 
 void Settings24hMenu::draw(Adafruit_GFX* display) const {
   char buff[6];
-  bool state = static_cast<ClockFaceMenu*>(getMenu(MENU_CLOCK))->mode24h;
   // Border
   display->drawRect(0, 0, WIDTH, HEIGHT, WHITE);
 
@@ -155,14 +137,14 @@ void Settings24hMenu::draw(Adafruit_GFX* display) const {
   display->drawFastHLine(WIDTH - 32, 10, 32, WHITE);
   display->setTextColor(BLACK, WHITE);
   display->setCursor(WIDTH - 31, 2);
-  snprintf(buff, 6, "%02d:%02d", now.hour(), now.minute());
+  snprintf(buff, 6, "%02d:%02d", state.now.hour(), state.now.minute());
   display->print(buff);
 
   // Selector
   display->setTextColor(WHITE);
   display->setTextSize(2);
   display->setCursor(40, 23);
-  if (state) {
+  if (state.mode24h) {
     display->print("24hr");
   } else {
     display->print("12hr");
@@ -181,18 +163,11 @@ void Settings24hMenu::draw(Adafruit_GFX* display) const {
 
 // ---- SettingsTimeMenu ----
 SettingsTimeMenu::SettingsTimeMenu()
-: now(0)
-, last_check(0)
-, selection(0)
+: selection(0)
 {}
 
 bool SettingsTimeMenu::update() {
-  if (millis() - last_check > 1000) {
-    last_check = millis();
-    now = RTC.now();
-    return true;
-  }
-  return false;
+  return state.timeMinuteUpdated;
 }
 
 void SettingsTimeMenu::onEnter() {
@@ -207,8 +182,8 @@ void SettingsTimeMenu::button2() {
   if (selection == 4) {
     switchMenu(MENU_SETTINGS);
   } else {
-    uint8_t hour = now.hour();
-    uint8_t minute = now.minute();
+    uint8_t hour = state.now.hour();
+    uint8_t minute = state.now.minute();
     if (selection == 0) {
       hour = (hour + 1) % 24;
     } else if (selection == 1) {
@@ -218,9 +193,9 @@ void SettingsTimeMenu::button2() {
     } else if (selection == 3) {
       minute = minute == 0 ? 59 : (minute - 1);
     }
-    now = DateTime(now.year(), now.month(), now.day(), hour, minute, 0);
+    state.now = DateTime(state.now.year(), state.now.month(), state.now.day(), hour, minute, 0);
     last_check = millis();
-    RTC.adjust(now);
+    RTC.adjust(state.now);
   }
 }
 
@@ -240,7 +215,7 @@ void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
   // Time
   display->setTextSize(2);
   display->setCursor(20, 23);
-  snprintf(buff, 9, "%02d:%02d", now.hour(), now.minute());
+  snprintf(buff, 9, "%02d:%02d", state.now.hour(), state.now.minute());
   display->print(buff);
 
   if (selection < 2) {
