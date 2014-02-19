@@ -1,19 +1,17 @@
-#ifndef MENU_SETTINGS_H
-#define MENU_SETTINGS_H
+#ifndef MENU_SETTINGS_24_H
+#define MENU_SETTINGS_24_H
 
 #include <Arduino.h>
 #include "Menu.h"
 
-class SettingsMenu : public Menu {
+class Settings24hMenu : public Menu {
 public:
-  SettingsMenu();
+  Settings24hMenu();
   virtual bool update();
   virtual void onEnter();
   virtual void button1();
   virtual void button2();
   virtual void draw(Adafruit_GFX* display) const;
-protected:
-  uint8_t selection;
 };
 
 #endif

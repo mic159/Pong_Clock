@@ -21,6 +21,8 @@
 
 #include "Menu.h"
 #include "Menu_Settings.h"
+#include "Menu_Settings_24.h"
+#include "Menu_Settings_Time.h"
 #include "Menu_Clockface.h"
 #include "State.h"
 #include "Util.h"
