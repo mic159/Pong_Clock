@@ -23,6 +23,7 @@
 #include "Menu_Settings.h"
 #include "Menu_Clockface.h"
 #include "State.h"
+#include "Util.h"
 
 #define OLED_RESET 4
 #define MINUTE_PIN A1
@@ -84,10 +85,10 @@ void setup(void) {
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(5, 20);
-  display.println("Pong Clock");
+  display_print(PSTR("Pong Clock"));
   display.setTextSize(1);
   display.setCursor(65, 56);
-  display.println("by 0miker0");
+  display_print(PSTR("by 0miker0"));
   display.display();
   delay(2000);
 

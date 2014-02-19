@@ -4,6 +4,7 @@
 #include "Menu_Settings.h"
 #include "Menu_Clockface.h"
 #include "State.h"
+#include "Util.h"
 
 // Grab RTC instance from .ino
 extern RTC_DS1307 RTC;
@@ -58,7 +59,7 @@ void SettingsMenu::draw(Adafruit_GFX* display) const {
   display->setTextSize(1);
   display->setCursor(2, 2);
   display->setTextColor(WHITE);
-  display->print("Settings");
+  display_print(PSTR("Settings"));
   display->drawFastVLine(50, 0, 10, WHITE);
   display->drawFastHLine(0, 10, 50, WHITE);
 
@@ -87,13 +88,13 @@ void SettingsMenu::draw(Adafruit_GFX* display) const {
     }
     switch (i) {
     case ITEM_24H:
-      display->print("Set 12/24h mode");
+      display_print(PSTR("Set 12/24h mode"));
       break;
     case ITEM_TIME:
-      display->print("Set Time");
+      display_print(PSTR("Set Time"));
       break;
     case ITEM_BACK:
-      display->print("Back");
+      display_print(PSTR("Back"));
       break;
     }
   }
@@ -125,7 +126,7 @@ void Settings24hMenu::draw(Adafruit_GFX* display) const {
   display->setTextColor(WHITE);
   display->setTextSize(1);
   display->setCursor(2, 2);
-  display->print("12/24hr mode");
+  display_print(PSTR("12/24hr mode"));
   display->drawFastVLine(74, 0, 10, WHITE);
   display->drawFastHLine(0, 10, 74, WHITE);
 
@@ -145,9 +146,9 @@ void Settings24hMenu::draw(Adafruit_GFX* display) const {
   display->setTextSize(2);
   display->setCursor(40, 23);
   if (state.mode24h) {
-    display->print("24hr");
+    display_print(PSTR("24hr"));
   } else {
-    display->print("12hr");
+    display_print(PSTR("12hr"));
   }
   display->fillTriangle(
     (WIDTH / 2)    , 15,
@@ -208,7 +209,7 @@ void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
   display->setTextColor(WHITE);
   display->setTextSize(1);
   display->setCursor(2, 2);
-  display->print("Set Time");
+  display_print(PSTR("Set Time"));
   display->drawFastVLine(50, 0, 10, WHITE);
   display->drawFastHLine(0, 10, 50, WHITE);
 
@@ -239,6 +240,6 @@ void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
   }
   display->setTextSize(1);
   display->setCursor(5, 54);
-  display->print("Back");
+  display_print(PSTR("Back"));
 }
 
