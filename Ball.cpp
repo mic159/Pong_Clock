@@ -6,7 +6,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 
-Ball::Ball(int16_t x, int16_t y, int16_t dx, int16_t dy)
+Ball::Ball(int16_t x, int16_t y, int8_t dx, int8_t dy)
 : x(x), y(y), w(3), h(3), dx(dx), dy(dy)
 {}
 

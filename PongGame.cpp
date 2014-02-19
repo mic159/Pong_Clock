@@ -21,12 +21,12 @@ PongGame::PongGame()
   ball.calcTarget();
 }
 
-void PongGame::setScore(uint16_t hour, uint16_t minute) {
+void PongGame::setScore(uint8_t hour, uint8_t minute) {
   lscore = hour;
   rscore = minute;
 }
 
-void PongGame::update(uint16_t hour, uint16_t minute) {
+void PongGame::update(uint8_t hour, uint8_t minute) {
   // If paused, dont do any movements
   if (pause > 0) {
     --pause;

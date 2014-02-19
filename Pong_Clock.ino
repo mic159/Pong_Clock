@@ -19,15 +19,13 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#include "PongGame.h"
 #include "Menu.h"
 #include "Menu_Settings.h"
 #include "Menu_Clockface.h"
 
 #define OLED_RESET 4
-
-const int MINUTE_PIN = A1;
-const int HOUR_PIN = A2;
+#define MINUTE_PIN A1
+#define HOUR_PIN   A2
 
 Bounce btn1;
 Bounce btn2;

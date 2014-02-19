@@ -5,11 +5,12 @@
 
 struct Paddle {
   Paddle(int16_t x, int16_t y);
-  void update(int16_t target_y, int16_t ball_dx, bool should_miss);
+  void update(int16_t target_y, int8_t ball_dx, bool should_miss);
   void draw(Adafruit_GFX* display) const;
 
-  int16_t x, y, w, h;
-  int16_t d;
+  int16_t x, y;
+  uint8_t w, h;
+  int8_t d;
 };
 
 #endif
