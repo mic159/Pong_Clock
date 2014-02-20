@@ -2,7 +2,6 @@
 #include <Adafruit_GFX.h>
 #include "Menu_Settings_24.h"
 #include "State.h"
-#include "Util.h"
 
 // Some graphics constants
 #define BLACK 0
@@ -35,7 +34,7 @@ void Settings24hMenu::draw(Adafruit_GFX* display) const {
   display->setTextColor(WHITE);
   display->setTextSize(1);
   display->setCursor(2, 2);
-  display_print(PSTR("12/24hr mode"));
+  display->print(F("12/24hr mode"));
   display->drawFastVLine(74, 0, 10, WHITE);
   display->drawFastHLine(0, 10, 74, WHITE);
 
@@ -47,7 +46,7 @@ void Settings24hMenu::draw(Adafruit_GFX* display) const {
   display->drawFastHLine(WIDTH - 32, 10, 32, WHITE);
   display->setTextColor(BLACK, WHITE);
   display->setCursor(WIDTH - 31, 2);
-  snprintf(buff, 6, "%02d:%02d", state.now.hour(), state.now.minute());
+  snprintf_P(buff, 6, PSTR("%02d:%02d"), state.now.hour(), state.now.minute());
   display->print(buff);
 
   // Selector
@@ -55,9 +54,9 @@ void Settings24hMenu::draw(Adafruit_GFX* display) const {
   display->setTextSize(2);
   display->setCursor(40, 23);
   if (state.mode24h) {
-    display_print(PSTR("24hr"));
+    display->print(F("24hr"));
   } else {
-    display_print(PSTR("12hr"));
+    display->print(F("12hr"));
   }
   display->fillTriangle(
     (WIDTH / 2)    , 15,

@@ -5,10 +5,10 @@
  * Modified by mic159
  *
  * Requirements:
- * Bounce2 https://github.com/thomasfredericks/Bounce-Arduino-Wiring
+ * Bounce2 https://github.com/mic159/Bounce-Arduino-Wiring
  * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
  * Adafriut SSD1306 https://github.com/adafruit/Adafruit_SSD1306
- * RTClib https://github.com/adafruit/RTClib
+ * RTClib https://github.com/mic159/RTClib
  */
 
 #include <Bounce2.h>
@@ -25,7 +25,6 @@
 #include "Menu_Settings_Time.h"
 #include "Menu_Clockface.h"
 #include "State.h"
-#include "Util.h"
 
 #define OLED_RESET 4
 #define MINUTE_PIN A1
@@ -72,7 +71,7 @@ void setup(void) {
 
   // First time init, set to code compile date.
   if (!RTC.isrunning()) {
-    RTC.adjust(DateTime(__DATE__, __TIME__));
+    RTC.adjust(DateTime(F(__DATE__), F(__TIME__)));
   }
 
   // Setup buttons
@@ -87,10 +86,10 @@ void setup(void) {
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(5, 20);
-  display_print(PSTR("Pong Clock"));
+  display.print(F("Pong Clock"));
   display.setTextSize(1);
   display.setCursor(65, 56);
-  display_print(PSTR("by 0miker0"));
+  display.print(F("by 0miker0"));
   display.display();
   delay(2000);
 

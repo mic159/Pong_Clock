@@ -2,7 +2,6 @@
 #include <Adafruit_GFX.h>
 #include "Menu_Settings_Time.h"
 #include "State.h"
-#include "Util.h"
 
 // Grab RTC instance from .ino
 extern RTC_DS1307 RTC;
@@ -61,14 +60,14 @@ void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
   display->setTextColor(WHITE);
   display->setTextSize(1);
   display->setCursor(2, 2);
-  display_print(PSTR("Set Time"));
+  display->print(F("Set Time"));
   display->drawFastVLine(50, 0, 10, WHITE);
   display->drawFastHLine(0, 10, 50, WHITE);
 
   // Time
   display->setTextSize(2);
   display->setCursor(20, 23);
-  snprintf(buff, 9, "%02d:%02d", state.now.hour(), state.now.minute());
+  snprintf_P(buff, 9, PSTR("%02d:%02d"), state.now.hour(), state.now.minute());
   display->print(buff);
 
   if (selection < 2) {
@@ -92,5 +91,5 @@ void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
   }
   display->setTextSize(1);
   display->setCursor(5, 54);
-  display_print(PSTR("Back"));
+  display->print(F("Back"));
 }
