@@ -23,6 +23,7 @@
 #include "Menu_Settings.h"
 #include "Menu_Settings_24.h"
 #include "Menu_Settings_Time.h"
+#include "Menu_Settings_Date.h"
 #include "Menu_Clockface.h"
 #include "State.h"
 
@@ -53,6 +54,9 @@ void switchMenu(Menu_selection s) {
       break;
     case MENU_SETTINGS_TIME:
       menu = new SettingsTimeMenu();
+      break;
+    case MENU_SETTINGS_DATE:
+      menu = new SettingsDateMenu();
       break;
     case MENU_CLOCK:
     default:

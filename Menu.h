@@ -9,6 +9,7 @@ enum Menu_selection {
   MENU_SETTINGS,
   MENU_SETTINGS_24H,
   MENU_SETTINGS_TIME,
+  MENU_SETTINGS_DATE,
 
   MENU_MAX
 };

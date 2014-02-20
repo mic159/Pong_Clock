@@ -17,6 +17,7 @@ extern RTC_DS1307 RTC;
 enum Items {
   ITEM_24H,
   ITEM_TIME,
+  ITEM_DATE,
   ITEM_BACK,
 
   ITEM_MAX,
@@ -44,6 +45,8 @@ void SettingsMenu::button2() {
     switchMenu(MENU_SETTINGS_TIME);
   } else if (selection == ITEM_24H) {
     switchMenu(MENU_SETTINGS_24H);
+  } else if (selection == ITEM_DATE) {
+    switchMenu(MENU_SETTINGS_DATE);
   }
 }
 
@@ -89,6 +92,9 @@ void SettingsMenu::draw(Adafruit_GFX* display) const {
       break;
     case ITEM_TIME:
       display->print(F("Set Time"));
+      break;
+    case ITEM_DATE:
+      display->print(F("Set Date"));
       break;
     case ITEM_BACK:
       display->print(F("Back"));
