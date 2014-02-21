@@ -1,10 +1,8 @@
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
-#include "Menu_Settings.h"
+#include <Adafruit_SSD1306.h>
+#include "Menu_Settings_Brightness.h"
 #include "State.h"
-
-// Grab RTC instance from .ino
-extern RTC_DS1307 RTC;
 
 // Some graphics constants
 #define BLACK 0
@@ -12,57 +10,57 @@ extern RTC_DS1307 RTC;
 #define WIDTH 128
 #define HEIGHT 64
 
-// ---- SettingsMenu ----
-// Menu items for SettingsMenu
-enum Items {
-  ITEM_24H,
-  ITEM_TIME,
-  ITEM_DATE,
-  ITEM_BACK,
-  ITEM_BRIGHT,
+extern Adafruit_SSD1306 display;
 
-  ITEM_MAX,
+enum MenuItems {
+  ITEM_100,
+  ITEM_50,
+  ITEM_25,
+  ITEM_BACK,
+  ITEM_MAX
 };
 
-SettingsMenu::SettingsMenu()
+SettingsBrightnessMenu::SettingsBrightnessMenu()
 : selection(0)
 {}
 
-bool SettingsMenu::update() {
+bool SettingsBrightnessMenu::update() {
   return state.timeMinuteUpdated;
 }
 
-void SettingsMenu::onEnter() {}
+void SettingsBrightnessMenu::onEnter() {
+}
 
-void SettingsMenu::button1() {
+void SettingsBrightnessMenu::button1() {
   selection = (selection + 1) % ITEM_MAX;
 }
 
-void SettingsMenu::button2() {
+void SettingsBrightnessMenu::button2() {
   if (selection == ITEM_BACK) {
     selection = 0;
     switchMenu(MENU_CLOCK);
-  } else if (selection == ITEM_TIME) {
-    switchMenu(MENU_SETTINGS_TIME);
-  } else if (selection == ITEM_24H) {
-    switchMenu(MENU_SETTINGS_24H);
-  } else if (selection == ITEM_DATE) {
-    switchMenu(MENU_SETTINGS_DATE);
-  } else if (selection == ITEM_BRIGHT) {
-    switchMenu(MENU_SETTINGS_BRIGHTNESS);
+  } else if (selection == ITEM_100) {
+    display.dim(false);
+    state.brightness = 1;
+  } else if (selection == ITEM_50) {
+    display.dim(true);
+    state.brightness = 0;
+  } else if (selection == ITEM_25) {
+    display.dim(50);
+    state.brightness = 0;
   }
 }
 
-void SettingsMenu::draw(Adafruit_GFX* display) const {
-  char buff[6];
+void SettingsBrightnessMenu::draw(Adafruit_GFX* display) const {
+  char buff[9];
   // Border
   display->drawRect(0, 0, WIDTH, HEIGHT, WHITE);
 
   // Title
+  display->setTextColor(WHITE);
   display->setTextSize(1);
   display->setCursor(2, 2);
-  display->setTextColor(WHITE);
-  display->print(F("Settings"));
+  display->print(F("Set Date"));
   display->drawFastVLine(50, 0, 10, WHITE);
   display->drawFastHLine(0, 10, 50, WHITE);
 
@@ -90,17 +88,14 @@ void SettingsMenu::draw(Adafruit_GFX* display) const {
       display->setTextColor(WHITE);
     }
     switch (i) {
-    case ITEM_24H:
-      display->print(F("Set 12/24h mode"));
+    case ITEM_100:
+      display->print(F("100%"));
       break;
-    case ITEM_TIME:
-      display->print(F("Set Time"));
+    case ITEM_50:
+      display->print(F("50%"));
       break;
-    case ITEM_DATE:
-      display->print(F("Set Date"));
-      break;
-    case ITEM_BRIGHT:
-      display->print(F("Set Brightness"));
+    case ITEM_25:
+      display->print(F("25%"));
       break;
     case ITEM_BACK:
       display->print(F("Back"));

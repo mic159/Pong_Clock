@@ -14,6 +14,7 @@ struct State {
 
   // Settings
   bool mode24h;
+  uint8_t brightness;
 
 private:
   unsigned long timeLastUpdated;
