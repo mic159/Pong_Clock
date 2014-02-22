@@ -80,6 +80,7 @@ void setup(void) {
   Wire.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
   display.clearDisplay();
+  display.setRotation(2);
 
   // First time init, set to code compile date.
   if (!RTC.isrunning()) {
@@ -89,8 +90,8 @@ void setup(void) {
   // Setup buttons
   pinMode(MINUTE_PIN, INPUT);
   pinMode(HOUR_PIN, INPUT);
-  btn1.attach(MINUTE_PIN);
-  btn2.attach(HOUR_PIN);
+  btn1.attach(HOUR_PIN);
+  btn2.attach(MINUTE_PIN);
   btn1.interval(30);
   btn2.interval(30);
 
