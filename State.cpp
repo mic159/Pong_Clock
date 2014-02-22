@@ -32,7 +32,7 @@ void State::save() {
 }
 
 void State::update() {
-  if (millis() - timeLastUpdated > 1000) {
+  if (millis() - timeLastUpdated > 1000 || timeLastUpdated == 0) {
     uint8_t minute = now.minute();
     now = RTC.now();
     timeLastUpdated = millis();
