@@ -64,14 +64,15 @@ const __FlashStringHelper* State::getMonthStr(uint8_t m) const {
 
 const __FlashStringHelper* State::getDayStr(uint8_t d) const {
   switch (d) {
-    default:
-    case 0: return F("Sun");
     case 1: return F("Mon");
     case 2: return F("Tue");
     case 3: return F("Wed");
     case 4: return F("Thu");
     case 5: return F("Fri");
     case 6: return F("Sat");
+    default:
+    case 7:
+    case 0: return F("Sun");
   }
 }
 
