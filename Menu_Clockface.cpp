@@ -6,7 +6,8 @@
 #include "State.h"
 #include "Clockface_Pong.h"
 
-ClockFaceMenu::ClockFaceMenu() {
+ClockfaceMenu::ClockfaceMenu()
+{
   face = new ClockfacePong();
   uint8_t hour = state.now.hour();
   if (!state.mode24h && hour > 12) {
@@ -15,11 +16,11 @@ ClockFaceMenu::ClockFaceMenu() {
   face->begin(hour, state.now.minute());
 }
 
-ClockFaceMenu::~ClockFaceMenu() {
+ClockfaceMenu::~ClockfaceMenu() {
   delete face;
 }
 
-bool ClockFaceMenu::update() {
+bool ClockfaceMenu::update() {
   uint8_t hour = state.now.hour();
   if (!state.mode24h && hour > 12) {
     hour = hour - 12;
@@ -29,15 +30,15 @@ bool ClockFaceMenu::update() {
   return true;
 }
 
-void ClockFaceMenu::draw(Adafruit_GFX* display) const {
+void ClockfaceMenu::draw(Adafruit_GFX* display) const {
   face->draw(display);
 }
 
-void ClockFaceMenu::button1() {
+void ClockfaceMenu::button1() {
   switchMenu(MENU_SETTINGS);
 }
 
-void ClockFaceMenu::button2() {
+void ClockfaceMenu::button2() {
   switchMenu(MENU_SETTINGS);
 }
 

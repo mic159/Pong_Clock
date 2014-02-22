@@ -6,16 +6,16 @@
 #include "Menu.h"
 #include "Clockface.h"
 
-class ClockFaceMenu : public Menu {
+class ClockfaceMenu : public Menu {
 public:
-  ClockFaceMenu();
-  ~ClockFaceMenu();
+  ClockfaceMenu();
+  ~ClockfaceMenu();
 
   bool update();
   void draw(Adafruit_GFX* display) const;
   void button1();
   void button2();
-
+private:
   Clockface* face;
 };
 

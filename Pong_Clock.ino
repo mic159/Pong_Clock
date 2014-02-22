@@ -69,7 +69,7 @@ void switchMenu(Menu_selection s) {
       break;
     case MENU_CLOCK:
     default:
-      menu = new ClockFaceMenu();
+      menu = new ClockfaceMenu();
       break;
   }
 }
