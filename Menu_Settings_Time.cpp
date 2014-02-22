@@ -21,10 +21,6 @@ bool SettingsTimeMenu::update() {
   return state.timeMinuteUpdated;
 }
 
-void SettingsTimeMenu::onEnter() {
-  selection = 0;
-}
-
 void SettingsTimeMenu::button1() {
   selection = (selection + 1) % 5;
 }
@@ -93,3 +89,4 @@ void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
   display->setCursor(5, 54);
   display->print(F("Back"));
 }
+

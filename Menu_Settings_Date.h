@@ -7,11 +7,10 @@
 class SettingsDateMenu : public Menu {
 public:
   SettingsDateMenu();
-  virtual bool update();
-  virtual void onEnter();
-  virtual void button1();
-  virtual void button2();
-  virtual void draw(Adafruit_GFX* display) const;
+  bool update();
+  void button1();
+  void button2();
+  void draw(Adafruit_GFX* display) const;
 private:
   uint8_t selection;
 };

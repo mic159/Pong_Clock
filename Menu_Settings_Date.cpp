@@ -38,10 +38,6 @@ bool SettingsDateMenu::update() {
   return state.timeMinuteUpdated;
 }
 
-void SettingsDateMenu::onEnter() {
-  selection = 0;
-}
-
 void SettingsDateMenu::button1() {
   selection = (selection + 1) % 7;
 }

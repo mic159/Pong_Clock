@@ -32,8 +32,6 @@ bool SettingsMenu::update() {
   return state.timeMinuteUpdated;
 }
 
-void SettingsMenu::onEnter() {}
-
 void SettingsMenu::button1() {
   selection = (selection + 1) % ITEM_MAX;
 }

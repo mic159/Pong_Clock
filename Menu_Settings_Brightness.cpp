@@ -27,9 +27,6 @@ bool SettingsBrightnessMenu::update() {
   return state.timeMinuteUpdated;
 }
 
-void SettingsBrightnessMenu::onEnter() {
-}
-
 void SettingsBrightnessMenu::button1() {
   selection = (selection + 1) % ITEM_MAX;
 }

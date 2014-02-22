@@ -7,19 +7,17 @@
 
 ClockFaceMenu::ClockFaceMenu() {
   face = new PongGame();
-}
-
-ClockFaceMenu::~ClockFaceMenu() {
-  delete face;
-}
-
-void ClockFaceMenu::onEnter() {
   uint8_t hour = state.now.hour();
   if (!state.mode24h && hour > 12) {
     hour = hour - 12;
   }
   face->setScore(hour, state.now.minute());
 }
+
+ClockFaceMenu::~ClockFaceMenu() {
+  delete face;
+}
+
 bool ClockFaceMenu::update() {
   uint8_t hour = state.now.hour();
   if (!state.mode24h && hour > 12) {
@@ -29,12 +27,15 @@ bool ClockFaceMenu::update() {
   // Always render
   return true;
 }
+
 void ClockFaceMenu::draw(Adafruit_GFX* display) const {
   face->draw(display);
 }
+
 void ClockFaceMenu::button1() {
   switchMenu(MENU_SETTINGS);
 }
+
 void ClockFaceMenu::button2() {
   switchMenu(MENU_SETTINGS);
 }

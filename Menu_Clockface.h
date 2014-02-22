@@ -11,7 +11,6 @@ public:
   ClockFaceMenu();
   ~ClockFaceMenu();
 
-  void onEnter();
   bool update();
   void draw(Adafruit_GFX* display) const;
   void button1();

@@ -7,11 +7,10 @@
 class Settings24hMenu : public Menu {
 public:
   Settings24hMenu();
-  virtual bool update();
-  virtual void onEnter();
-  virtual void button1();
-  virtual void button2();
-  virtual void draw(Adafruit_GFX* display) const;
+  bool update();
+  void button1();
+  void button2();
+  void draw(Adafruit_GFX* display) const;
 };
 
 #endif

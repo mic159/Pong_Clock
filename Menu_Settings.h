@@ -8,7 +8,6 @@ class SettingsMenu : public Menu {
 public:
   SettingsMenu();
   virtual bool update();
-  virtual void onEnter();
   virtual void button1();
   virtual void button2();
   virtual void draw(Adafruit_GFX* display) const;

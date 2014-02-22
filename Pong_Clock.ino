@@ -72,7 +72,6 @@ void switchMenu(Menu_selection s) {
       menu = new ClockFaceMenu();
       break;
   }
-  menu->onEnter();
 }
 
 void setup(void) {
