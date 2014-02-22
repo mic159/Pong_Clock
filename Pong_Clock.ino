@@ -101,8 +101,10 @@ void setup(void) {
   display.setCursor(5, 20);
   display.print(F("Pong Clock"));
   display.setTextSize(1);
-  display.setCursor(65, 56);
+  display.setCursor(66, 48);
   display.print(F("by 0miker0"));
+  display.setCursor(78, 56);
+  display.print(F("& mic159"));
   display.display();
   delay(2000);
 
