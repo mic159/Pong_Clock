@@ -12,24 +12,6 @@ extern RTC_DS1307 RTC;
 #define WIDTH 128
 #define HEIGHT 64
 
-const __FlashStringHelper* getMonthStr(uint8_t m) {
-  switch (m) {
-    default:
-    case 0: return F("Jan");
-    case 1: return F("Feb");
-    case 2: return F("Mar");
-    case 3: return F("Apr");
-    case 4: return F("May");
-    case 5: return F("Jun");
-    case 6: return F("Jul");
-    case 7: return F("Aug");
-    case 8: return F("Sep");
-    case 9: return F("Oct");
-    case 10: return F("Nov");
-    case 11: return F("Dec");
-  }
-}
-
 SettingsDateMenu::SettingsDateMenu()
 : selection(0)
 {}
@@ -78,7 +60,7 @@ void SettingsDateMenu::draw(Adafruit_GFX* display) const {
   display->setCursor(20, 23);
   display->print(state.now.day());
   display->setCursor(50, 23);
-  display->print(getMonthStr(state.now.month()));
+  display->print(state.getMonthStr(state.now.month()));
   display->setCursor(90, 30);
   display->setTextSize(1);
   display->print(state.now.year());

@@ -12,6 +12,8 @@ struct State {
   DateTime now;
   bool timeUpdated;       // If the time was updated this frame
   bool timeMinuteUpdated; // Did the minute change this frame
+  const __FlashStringHelper* getMonthStr(uint8_t m) const;
+  const __FlashStringHelper* getDayStr(uint8_t d) const;
 
   // Settings
   bool mode24h;
