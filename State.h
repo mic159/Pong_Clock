@@ -6,6 +6,7 @@
 struct State {
   State();
   void update();
+  void save();
 
   // The time
   DateTime now;
@@ -14,7 +15,7 @@ struct State {
 
   // Settings
   bool mode24h;
-  uint8_t brightness;
+  bool dim;
 
 private:
   unsigned long timeLastUpdated;

@@ -13,9 +13,8 @@
 extern Adafruit_SSD1306 display;
 
 enum MenuItems {
-  ITEM_100,
-  ITEM_50,
-  ITEM_25,
+  ITEM_BRIGHT,
+  ITEM_DIM,
   ITEM_BACK,
   ITEM_MAX
 };
@@ -39,15 +38,14 @@ void SettingsBrightnessMenu::button2() {
   if (selection == ITEM_BACK) {
     selection = 0;
     switchMenu(MENU_CLOCK);
-  } else if (selection == ITEM_100) {
+  } else if (selection == ITEM_BRIGHT) {
     display.dim(false);
-    state.brightness = 1;
-  } else if (selection == ITEM_50) {
+    state.dim = false;
+    state.save();
+  } else if (selection == ITEM_DIM) {
     display.dim(true);
-    state.brightness = 0;
-  } else if (selection == ITEM_25) {
-    display.dim(50);
-    state.brightness = 0;
+    state.dim = true;
+    state.save();
   }
 }
 
@@ -88,14 +86,13 @@ void SettingsBrightnessMenu::draw(Adafruit_GFX* display) const {
       display->setTextColor(WHITE);
     }
     switch (i) {
-    case ITEM_100:
-      display->print(F("100%"));
+    case ITEM_BRIGHT:
+      if (!state.dim) display->print(F("* "));
+      display->print(F("Bright"));
       break;
-    case ITEM_50:
-      display->print(F("50%"));
-      break;
-    case ITEM_25:
-      display->print(F("25%"));
+    case ITEM_DIM:
+      if (state.dim) display->print(F("* "));
+      display->print(F("Dim"));
       break;
     case ITEM_BACK:
       display->print(F("Back"));

@@ -101,6 +101,9 @@ void setup(void) {
   display.display();
   delay(2000);
 
+  // Load things from state
+  display.dim(state.dim);
+
   state.update();
   switchMenu(MENU_CLOCK);
 }

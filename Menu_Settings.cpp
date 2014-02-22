@@ -18,8 +18,8 @@ enum Items {
   ITEM_24H,
   ITEM_TIME,
   ITEM_DATE,
-  ITEM_BACK,
   ITEM_BRIGHT,
+  ITEM_BACK,
 
   ITEM_MAX,
 };
