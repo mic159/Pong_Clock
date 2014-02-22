@@ -31,6 +31,11 @@
 #define OLED_RESET 4
 #define MINUTE_PIN A1
 #define HOUR_PIN   A2
+#define WIDTH 128
+#define HEIGHT 64
+
+// Set this to enable printing debug stats to the screen
+//#define DEBUG_STATS
 
 Bounce btn1;
 Bounce btn2;
@@ -113,6 +118,9 @@ void loop() {
   // when we really need to. Drawing the display
   // every time is wasteful if nothing has changed.
   bool draw = false;
+#ifdef DEBUG_STATS
+  unsigned long timer = millis();
+#endif
 
   // Buttons
   if (btn1.update() && btn1.read()) {
@@ -134,7 +142,25 @@ void loop() {
   if (draw) {
     display.clearDisplay();
     menu->draw(&display);
+
+#ifdef DEBUG_STATS
+    display.setTextSize(1);
+    display.setTextColor(WHITE, BLACK);
+    display.setCursor(80, HEIGHT - 10);
+    display.print(freeRam());
+    display.setCursor(109, HEIGHT - 10);
+    display.print(millis() - timer);
+#endif
+
     display.display();
   }
 }
+
+#ifdef DEBUG_STATS
+int freeRam () {
+  extern int __heap_start, *__brkval;
+  int v;
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+#endif
 
