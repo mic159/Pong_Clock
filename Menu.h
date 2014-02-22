@@ -22,6 +22,8 @@ public:
   virtual void draw(Adafruit_GFX* display) const = 0;
   virtual void button1() = 0;
   virtual void button2() = 0;
+protected:
+  void drawLayout(Adafruit_GFX* display, const __FlashStringHelper* title) const;
 };
 
 void switchMenu(Menu_selection);

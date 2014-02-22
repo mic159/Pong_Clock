@@ -48,20 +48,12 @@ void SettingsTimeMenu::button2() {
 }
 
 void SettingsTimeMenu::draw(Adafruit_GFX* display) const {
-  char buff[9];
-  // Border
-  display->drawRect(0, 0, WIDTH, HEIGHT, WHITE);
-
-  // Title
-  display->setTextColor(WHITE);
-  display->setTextSize(1);
-  display->setCursor(2, 2);
-  display->print(F("Set Time"));
-  display->drawFastVLine(50, 0, 10, WHITE);
-  display->drawFastHLine(0, 10, 50, WHITE);
+  drawLayout(display, F("Set Time"));
 
   // Time
+  char buff[9];
   display->setTextSize(2);
+  display->setTextColor(WHITE);
   display->setCursor(20, 23);
   snprintf_P(buff, 9, PSTR("%02d:%02d"), state.now.hour(), state.now.minute());
   display->print(buff);
