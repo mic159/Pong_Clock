@@ -19,6 +19,7 @@ void Settings24hMenu::onEnter() {}
 
 void Settings24hMenu::button1() {
   state.mode24h = !state.mode24h;
+  state.save();
 }
 
 void Settings24hMenu::button2() {
