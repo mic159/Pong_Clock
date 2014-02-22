@@ -17,6 +17,7 @@ public:
   void button2();
 private:
   Clockface* face;
+  uint8_t faceType;
 };
 
 #endif
