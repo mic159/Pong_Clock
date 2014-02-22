@@ -1,15 +1,16 @@
-#ifndef PONG_GAME_H
-#define PONG_GAME_H
+#ifndef CLOCKFACE_PONG_H
+#define CLOCKFACE_PONG_H
 
 #include <Adafruit_GFX.h>
+#include "Clockface.h"
 #include "Paddle.h"
 #include "Ball.h"
 
-class PongGame {
+class ClockfacePong : public Clockface {
 public:
-  PongGame();
+  ClockfacePong();
 
-  void setScore(uint8_t hour, uint8_t minute);
+  void begin(uint8_t hour, uint8_t minute);
   void update(uint8_t hour, uint8_t minute);
   void draw(Adafruit_GFX* display) const;
   void drawScore(Adafruit_GFX* display) const;

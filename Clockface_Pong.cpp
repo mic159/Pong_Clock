@@ -2,13 +2,13 @@
 #include <Adafruit_GFX.h>
 #include "Paddle.h"
 #include "Ball.h"
-#include "PongGame.h"
+#include "Clockface_Pong.h"
 
 #define WHITE 1
 #define WIDTH 128
 #define HEIGHT 64
 
-PongGame::PongGame()
+ClockfacePong::ClockfacePong()
 : lpaddle(0, 0), rpaddle(WIDTH - 2, HEIGHT - 14)
 , ball(2, 2, 1, 1)
 , lscore(0), rscore(0)
@@ -21,12 +21,12 @@ PongGame::PongGame()
   ball.calcTarget();
 }
 
-void PongGame::setScore(uint8_t hour, uint8_t minute) {
+void ClockfacePong::begin(uint8_t hour, uint8_t minute) {
   lscore = hour;
   rscore = minute;
 }
 
-void PongGame::update(uint8_t hour, uint8_t minute) {
+void ClockfacePong::update(uint8_t hour, uint8_t minute) {
   // If paused, dont do any movements
   if (pause > 0) {
     --pause;
@@ -52,7 +52,7 @@ void PongGame::update(uint8_t hour, uint8_t minute) {
   }
 }
 
-void PongGame::draw(Adafruit_GFX* display) const {
+void ClockfacePong::draw(Adafruit_GFX* display) const {
   lpaddle.draw(display);
   rpaddle.draw(display);
   // Middle line
@@ -63,7 +63,7 @@ void PongGame::draw(Adafruit_GFX* display) const {
   ball.draw(display);
 }
 
-void PongGame::drawScore(Adafruit_GFX* display) const {
+void ClockfacePong::drawScore(Adafruit_GFX* display) const {
   int lscore_x, rscore_x;
   static const int font_w = 10;
   static const int font_sp = 4;

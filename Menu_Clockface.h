@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <RTClib.h>
 #include "Menu.h"
-#include "PongGame.h"
+#include "Clockface.h"
 
 class ClockFaceMenu : public Menu {
 public:
@@ -16,7 +16,7 @@ public:
   void button1();
   void button2();
 
-  PongGame* face;
+  Clockface* face;
 };
 
 #endif

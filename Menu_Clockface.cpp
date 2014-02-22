@@ -4,14 +4,15 @@
 #include "Menu_Clockface.h"
 #include "Menu.h"
 #include "State.h"
+#include "Clockface_Pong.h"
 
 ClockFaceMenu::ClockFaceMenu() {
-  face = new PongGame();
+  face = new ClockfacePong();
   uint8_t hour = state.now.hour();
   if (!state.mode24h && hour > 12) {
     hour = hour - 12;
   }
-  face->setScore(hour, state.now.minute());
+  face->begin(hour, state.now.minute());
 }
 
 ClockFaceMenu::~ClockFaceMenu() {
