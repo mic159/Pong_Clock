@@ -34,7 +34,7 @@ void SettingsBrightnessMenu::button1() {
 void SettingsBrightnessMenu::button2() {
   if (selection == ITEM_BACK) {
     selection = 0;
-    switchMenu(MENU_CLOCK);
+    switchMenu(MENU_SETTINGS);
   } else if (selection == ITEM_BRIGHT) {
     display.dim(false);
     state.dim = false;
