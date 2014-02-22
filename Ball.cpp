@@ -15,13 +15,13 @@ bool Ball::update(const Paddle& lpaddle, const Paddle& rpaddle) {
   y = y + dy;
   bool hit = false;
 
-  if (dx == -1 && x == lpaddle.w && y + h >= lpaddle.y && y <= lpaddle.y + lpaddle.h) {
+  if (dx < 0 && x <= lpaddle.w && y + h >= lpaddle.y && y <= lpaddle.y + lpaddle.h) {
     dx = dx * -1;
     calcTarget();
-  } else if (dx == 1 && x + w == 128 - rpaddle.w && y + h >= rpaddle.y && y <= rpaddle.y + rpaddle.h) {
+  } else if (dx > 0 && x + w >= 128 - rpaddle.w && y + h >= rpaddle.y && y <= rpaddle.y + rpaddle.h) {
     dx = dx * -1;
     calcTarget();
-  } else if ((dx == 1 && x >= 128) || (dx == -1 && x + w < 0)) {
+  } else if ((dx > 0 && x >= 128) || (dx < 0 && x + w < 0)) {
     hit = true;
   }
 
@@ -36,7 +36,7 @@ void Ball::calcTarget() {
   int16_t reflections;
   int16_t calc_y;
 
-  if (dx == 1) {
+  if (dx > 0) {
     target_x = 128 - w;
   } 
   else {

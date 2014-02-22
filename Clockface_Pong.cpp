@@ -8,16 +8,17 @@
 #define WIDTH 128
 #define HEIGHT 64
 
+#define BALL_SPEED 2
+
 ClockfacePong::ClockfacePong()
 : lpaddle(0, 0), rpaddle(WIDTH - 2, HEIGHT - 14)
-, ball(2, 2, 1, 1)
+, ball(2, 2, BALL_SPEED, BALL_SPEED)
 , lscore(0), rscore(0)
 , pause(0)
 {
   lpaddle.y = random(0, HEIGHT - lpaddle.h);
   ball.x = lpaddle.w;
   ball.y = lpaddle.y + (lpaddle.h / 2);
-  ball.dx = 1;
   ball.calcTarget();
 }
 
@@ -46,7 +47,8 @@ void ClockfacePong::update(uint8_t hour, uint8_t minute) {
     lpaddle.y = random(0, HEIGHT - lpaddle.h);
     ball.x = lpaddle.w;
     ball.y = lpaddle.y + (lpaddle.h / 2);
-    ball.dx = 1;
+    if (ball.dx < 0)
+      ball.dx *= -1;
     ball.calcTarget();
     pause = 50;
   }
