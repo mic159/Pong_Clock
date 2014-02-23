@@ -24,10 +24,10 @@ void Paddle::update(int16_t target_y, int8_t ball_dx, bool should_miss) {
   } else {
     // If I need to miss the ball, dont go straight to target
     if (should_miss) {
-      if (target_y > 64 - h) {
-        target_y = target_y - h;
+      if (target_y > 64 - (h+2)) {
+        target_y = target_y - (h+2);
       } else {
-        target_y = target_y + h;
+        target_y = target_y + (h+2);
       }
     }
     if (y + h / 2 == target_y) {
