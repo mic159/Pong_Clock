@@ -1,5 +1,5 @@
-#ifndef PONG_GAME_H
-#define PONG_GAME_H
+#ifndef CLOCKFACE_DIGITAL_H
+#define CLOCKFACE_DIGITAL_H
 
 #include <Adafruit_GFX.h>
 #include "Clockface.h"
