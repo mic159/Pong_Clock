@@ -1,3 +1,10 @@
+/*
+ * Digital Clockface
+ *
+ * Shows the hours:minutes in big text, and has a bar underneath showing
+ * the seconds.
+ * It also has the date on the right hand side of the screen.
+ */
 #include <Arduino.h>
 #include <Adafriut_GFX.h>
 #include "Clockface_Digital.h"

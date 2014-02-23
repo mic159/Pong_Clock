@@ -1,8 +1,6 @@
 /*
- * Pongclock Code for Mike's custom sensor Board.
- * Original Code from https://github.com/rparrett/pongclock
- * Hardware adapted by KaR]V[aN, http://karman.cc
- * Modified by mic159
+ * Pongclock Code for 0miker0's Pong Clock.
+ * Code by mic159.
  *
  * Requirements:
  * Bounce2 https://github.com/mic159/Bounce-Arduino-Wiring

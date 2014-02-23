@@ -1,3 +1,11 @@
+/*
+ * Pong Clockface
+ * Plays a game of Pong and makes the score equal the time!
+ *
+ * The code and algorythms originated from https://github.com/rparrett/pongclock
+ * It was modified by mic159 to use classes, and to fit into the Pong Clock code structure.
+ */
+
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include "Paddle.h"
