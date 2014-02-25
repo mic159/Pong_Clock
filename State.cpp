@@ -47,18 +47,18 @@ void State::update() {
 const __FlashStringHelper* State::getMonthStr(uint8_t m) const {
   switch (m) {
     default:
-    case 0: return F("Jan");
-    case 1: return F("Feb");
-    case 2: return F("Mar");
-    case 3: return F("Apr");
-    case 4: return F("May");
-    case 5: return F("Jun");
-    case 6: return F("Jul");
-    case 7: return F("Aug");
-    case 8: return F("Sep");
-    case 9: return F("Oct");
-    case 10: return F("Nov");
-    case 11: return F("Dec");
+    case 1: return F("Jan");
+    case 2: return F("Feb");
+    case 3: return F("Mar");
+    case 4: return F("Apr");
+    case 5: return F("May");
+    case 6: return F("Jun");
+    case 7: return F("Jul");
+    case 8: return F("Aug");
+    case 9: return F("Sep");
+    case 10: return F("Oct");
+    case 11: return F("Nov");
+    case 12: return F("Dec");
   }
 }
 

@@ -36,13 +36,13 @@ void SettingsDateMenu::button2() {
     } else if (selection == 5) {
       year -= 1;
     } else if (selection == 1) {
-      month = (month + 1) % 12;
+      month = (month % 12) + 1;
     } else if (selection == 4) {
-      month = month == 0 ? 11 : (month - 1);
+      month = month == 1 ? 12 : (month - 1);
     } else if (selection == 0) {
-      day = (day + 1) % 31;
+      day = (day % 31) + 1;
     } else if (selection == 3) {
-      day = day == 0 ? 31 : (day - 1);
+      day = day == 1 ? 31 : (day - 1);
     }
     state.now = DateTime(year, month, day, state.now.hour(), state.now.minute(), state.now.second());
     state.timeUpdated = true;
