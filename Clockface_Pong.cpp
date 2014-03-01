@@ -42,7 +42,7 @@ void ClockfacePong::update(uint8_t hour, uint8_t minute) {
     return;
   }
 
-  lpaddle.update(ball.target_y, ball.dx, rscore != minute);
+  lpaddle.update(ball.target_y, ball.dx, rscore != minute && lscore == hour);
   rpaddle.update(ball.target_y, ball.dx, lscore != hour);
 
   bool hit = ball.update(lpaddle, rpaddle);
