@@ -12,7 +12,7 @@ Paddle::Paddle(int16_t x, int16_t y)
 : w(2), h(14), x(x), y(y), d(0)
 {}
 
-void Paddle::update(int16_t target_y, int8_t ball_dx, bool should_miss) {
+void Paddle::update(uint8_t target_y, int8_t ball_dx, bool should_miss) {
   bool my_direction = false;
   // Check side
   if (x == 0) {
@@ -41,7 +41,7 @@ void Paddle::update(int16_t target_y, int8_t ball_dx, bool should_miss) {
     }
   }
 
-  if (y + h >= 64 && d == 1) {
+  if (y + h >= HEIGHT && d == 1) {
     d = 0;
   } else if (y <= 0 && d == -1) {
     d = 0;

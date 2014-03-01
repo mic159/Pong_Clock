@@ -36,7 +36,7 @@ bool Ball::update(const Paddle& lpaddle, const Paddle& rpaddle) {
 
 void Ball::calcTarget() {
   int16_t target_x;
-  int16_t reflections;
+  uint8_t reflections;
   int16_t calc_y;
 
   if (dx > 0) {
