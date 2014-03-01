@@ -66,7 +66,7 @@ void ClockfacePong::draw(Adafruit_GFX* display) const {
   lpaddle.draw(display);
   rpaddle.draw(display);
   // Middle line
-  for(uint8_t i = 0; i < HEIGHT / 4; i = i + 2) {
+  for(uint8_t i = rscore % 2; i < HEIGHT / 4; i = i + 2) {
     display->fillRect(WIDTH / 2 - 1, i * 4, 2, 4, WHITE);
   }
   drawScore(display);
