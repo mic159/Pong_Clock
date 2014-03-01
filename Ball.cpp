@@ -18,7 +18,7 @@ bool Ball::update(const Paddle& lpaddle, const Paddle& rpaddle) {
   y = y + dy;
   bool hit = false;
 
-  if (dx < 0 && x <= lpaddle.w && y + h >= lpaddle.y && y <= lpaddle.y + lpaddle.h) {
+  if (dx < 0 && x <= lpaddle.w && y >= lpaddle.y && y <= lpaddle.y + lpaddle.h) {
     dx = dx * -1;
     calcTarget();
   } else if (dx > 0 && x + w >= WIDTH - rpaddle.w && y + h >= rpaddle.y && y <= rpaddle.y + rpaddle.h) {
