@@ -1,10 +1,13 @@
-
-#define WHITE 1
-
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include "Paddle.h"
 #include "Ball.h"
+
+// Some graphics constants
+#define BLACK 0
+#define WHITE 1
+#define WIDTH 128
+#define HEIGHT 64
 
 Ball::Ball(int16_t x, int16_t y, int8_t dx, int8_t dy)
 : x(x), y(y), w(3), h(3), dx(dx), dy(dy)
@@ -18,14 +21,14 @@ bool Ball::update(const Paddle& lpaddle, const Paddle& rpaddle) {
   if (dx < 0 && x <= lpaddle.w && y + h >= lpaddle.y && y <= lpaddle.y + lpaddle.h) {
     dx = dx * -1;
     calcTarget();
-  } else if (dx > 0 && x + w >= 128 - rpaddle.w && y + h >= rpaddle.y && y <= rpaddle.y + rpaddle.h) {
+  } else if (dx > 0 && x + w >= WIDTH - rpaddle.w && y + h >= rpaddle.y && y <= rpaddle.y + rpaddle.h) {
     dx = dx * -1;
     calcTarget();
-  } else if ((dx > 0 && x >= 128) || (dx < 0 && x + w < 0)) {
+  } else if ((dx > 0 && x >= WIDTH) || (dx < 0 && x + w < 0)) {
     hit = true;
   }
 
-  if (y > 64 - w || y < 0) {
+  if (y > HEIGHT - w || y < 0) {
     dy = dy * -1;
   }
   return hit;
@@ -37,21 +40,21 @@ void Ball::calcTarget() {
   int16_t calc_y;
 
   if (dx > 0) {
-    target_x = 128 - w;
+    target_x = WIDTH - w;
   } 
   else {
-    target_x = -1 * (128 - w);
+    target_x = -1 * (WIDTH - w);
   }
 
   calc_y = abs(target_x * (dy / dx) + y);
 
-  reflections = floor(calc_y / 64);
+  reflections = floor(calc_y / HEIGHT);
 
   if (reflections % 2 == 0) {
-    target_y = calc_y % 64;
+    target_y = calc_y % HEIGHT;
   } 
   else {
-    target_y = 64 - (calc_y % 64);
+    target_y = HEIGHT - (calc_y % HEIGHT);
   }
 }
 
