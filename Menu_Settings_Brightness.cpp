@@ -47,28 +47,7 @@ void SettingsBrightnessMenu::button2() {
 }
 
 void SettingsBrightnessMenu::draw(Adafruit_GFX* display) const {
-  char buff[9];
-  // Border
-  display->drawRect(0, 0, WIDTH, HEIGHT, WHITE);
-
-  // Title
-  display->setTextColor(WHITE);
-  display->setTextSize(1);
-  display->setCursor(2, 2);
-  display->print(F("Set Date"));
-  display->drawFastVLine(50, 0, 10, WHITE);
-  display->drawFastHLine(0, 10, 50, WHITE);
-
-  // Clock
-  display->fillRect(
-    WIDTH - 33, 0,
-    33, 10,
-    WHITE);
-  display->drawFastHLine(WIDTH - 32, 10, 32, WHITE);
-  display->setTextColor(BLACK, WHITE);
-  display->setCursor(WIDTH - 31, 2);
-  snprintf_P(buff, 6, PSTR("%02d:%02d"), state.now.hour(), state.now.minute());
-  display->print(buff);
+  drawLayout(display, F("Brightness"));
 
   // Menu Items
   for (uint8_t i = 0; i < ITEM_MAX; ++i) {
