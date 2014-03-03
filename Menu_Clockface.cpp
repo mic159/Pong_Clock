@@ -6,16 +6,19 @@
 #include "State.h"
 #include "Clockface_Pong.h"
 #include "Clockface_Digital.h"
+#include "Clockface_Pacman.h"
 
 enum FACE {
   FACE_PONG,
   FACE_DIGITAL,
+  FACE_PACMAN,
 
   FACE_MAX
 };
 
 ClockfaceMenu::ClockfaceMenu()
 : faceType(FACE_PONG)
+, face(NULL)
 {
   face = new ClockfacePong();
   uint8_t hour = state.now.hour();
@@ -47,13 +50,19 @@ void ClockfaceMenu::button1() {
   faceType = (faceType + 1) % FACE_MAX;
 
   // Switch object
-  delete face;
+  if (face) {
+    delete face;
+    face = NULL;
+  }
   switch(faceType) {
   case FACE_PONG:
     face = new ClockfacePong();
     break;
   case FACE_DIGITAL:
     face = new ClockfaceDigital();
+    break;
+  case FACE_PACMAN:
+    face = new ClockfacePacman();
     break;
   }
 
