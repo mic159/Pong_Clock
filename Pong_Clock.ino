@@ -43,35 +43,6 @@ RTC_DS1307 RTC;
 State state;
 Menu* menu = NULL;
 
-void switchMenu(Menu_selection s) {
-  if (s >= MENU_MAX) return;
-  if (menu) {
-    delete menu;
-    menu = NULL;
-  }
-  switch(s) {
-    case MENU_SETTINGS:
-      menu = new SettingsMenu();
-      break;
-    case MENU_SETTINGS_24H:
-      menu = new Settings24hMenu();
-      break;
-    case MENU_SETTINGS_TIME:
-      menu = new SettingsTimeMenu();
-      break;
-    case MENU_SETTINGS_DATE:
-      menu = new SettingsDateMenu();
-      break;
-    case MENU_SETTINGS_BRIGHTNESS:
-      menu = new SettingsBrightnessMenu();
-      break;
-    case MENU_CLOCK:
-    default:
-      menu = new ClockfaceMenu();
-      break;
-  }
-}
-
 void setup(void) {
   Serial.begin(9600);
   randomSeed(analogRead(A3));
@@ -132,6 +103,9 @@ void loop() {
     draw = true;
   }
 
+  // Switch menu if indicated.
+  updateMenuSelection();
+
   // Update
   state.update();
   if(menu->update()) {
@@ -154,6 +128,7 @@ void loop() {
 
     display.display();
   }
+
 }
 
 #ifdef DEBUG_STATS

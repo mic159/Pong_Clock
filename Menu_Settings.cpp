@@ -25,7 +25,8 @@ enum Items {
 };
 
 SettingsMenu::SettingsMenu()
-: selection(0)
+: Menu(MENU_SETTINGS)
+, selection(0)
 {}
 
 bool SettingsMenu::update() {

@@ -17,7 +17,8 @@ enum FACE {
 };
 
 ClockfaceMenu::ClockfaceMenu()
-: faceType(FACE_PONG)
+: Menu(MENU_CLOCK)
+, faceType(FACE_PONG)
 , face(NULL)
 {
   face = new ClockfacePong();

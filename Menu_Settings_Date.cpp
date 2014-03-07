@@ -13,7 +13,8 @@ extern RTC_DS1307 RTC;
 #define HEIGHT 64
 
 SettingsDateMenu::SettingsDateMenu()
-: selection(0)
+: Menu(MENU_SETTINGS_DATE)
+, selection(0)
 {}
 
 bool SettingsDateMenu::update() {

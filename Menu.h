@@ -17,15 +17,21 @@ enum Menu_selection {
 
 class Menu {
 public:
-  virtual ~Menu() {}
-  virtual bool update() = 0;
-  virtual void draw(Adafruit_GFX* display) const = 0;
-  virtual void button1() = 0;
-  virtual void button2() = 0;
+  Menu(Menu_selection t) : type(t) {}
+  bool update();
+  void draw(Adafruit_GFX* display) const;
+  void button1();
+  void button2();
+
+  Menu_selection getType() const { return type; }
 protected:
+  Menu_selection type;
   void drawLayout(Adafruit_GFX* display, const __FlashStringHelper* title) const;
 };
 
+// Change the current menu
 void switchMenu(Menu_selection);
+// To be called from the .ino to actually do the menu switch.
+void updateMenuSelection();
 
 #endif

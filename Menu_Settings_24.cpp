@@ -9,7 +9,9 @@
 #define WIDTH 128
 #define HEIGHT 64
 
-Settings24hMenu::Settings24hMenu() {}
+Settings24hMenu::Settings24hMenu()
+: Menu(MENU_SETTINGS_24H)
+{}
 
 bool Settings24hMenu::update()  {
   return state.timeMinuteUpdated;

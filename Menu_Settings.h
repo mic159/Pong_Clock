@@ -7,10 +7,10 @@
 class SettingsMenu : public Menu {
 public:
   SettingsMenu();
-  virtual bool update();
-  virtual void button1();
-  virtual void button2();
-  virtual void draw(Adafruit_GFX* display) const;
+  bool update();
+  void button1();
+  void button2();
+  void draw(Adafruit_GFX* display) const;
 protected:
   uint8_t selection;
 };

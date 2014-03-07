@@ -14,7 +14,8 @@ extern RTC_DS1307 RTC;
 
 
 SettingsTimeMenu::SettingsTimeMenu()
-: selection(0)
+: Menu(MENU_SETTINGS_TIME)
+, selection(0)
 {}
 
 bool SettingsTimeMenu::update() {

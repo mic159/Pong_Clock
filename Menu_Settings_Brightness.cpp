@@ -20,7 +20,8 @@ enum MenuItems {
 };
 
 SettingsBrightnessMenu::SettingsBrightnessMenu()
-: selection(0)
+: Menu(MENU_SETTINGS_BRIGHTNESS)
+, selection(0)
 {}
 
 bool SettingsBrightnessMenu::update() {
