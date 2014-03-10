@@ -10,7 +10,7 @@ public:
   void update(uint8_t hour, uint8_t minute);
   void draw(Adafruit_GFX* display) const;
 private:
-  int16_t x;
+  uint8_t dots_x, blinky_x, die_timer;
 };
 
 #endif
