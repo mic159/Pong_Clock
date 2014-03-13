@@ -7,11 +7,13 @@
 #include "Clockface_Pong.h"
 #include "Clockface_Digital.h"
 #include "Clockface_Pacman.h"
+#include "Clockface_Tetris.h"
 
 enum FACE {
   FACE_PONG,
   FACE_DIGITAL,
   FACE_PACMAN,
+  FACE_TETRIS,
 
   FACE_MAX
 };
@@ -68,6 +70,9 @@ void ClockfaceMenu::changeMenu() {
     break;
   case FACE_PACMAN:
     face = new ClockfacePacman();
+    break;
+  case FACE_TETRIS:
+    face = new ClockfaceTetris();
     break;
   }
 
