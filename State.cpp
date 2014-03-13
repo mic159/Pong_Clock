@@ -12,23 +12,30 @@ State::State()
 , timeMinuteUpdated(false)
 , mode24h(false)
 , dim(false)
+, current_face(0)
 {
   byte check = EEPROM.read(0);
-  if (check == 0x41) {
+  // V1
+  if (check >= 0x41 && check <= 0x42) {
     byte flags = EEPROM.read(1);
     mode24h = flags & _BV(0);
     dim = flags & _BV(1);
   }
+  // V2
+  if (check == 0x42) {
+    current_face = EEPROM.read(2);
+  }
 }
 
 void State::save() {
-  EEPROM.write(0, 0x41);
+  EEPROM.write(0, 0x42);
   byte flags = 0;
   if (mode24h)
     flags |= _BV(0);
   if (dim)
     flags |= _BV(1);
   EEPROM.write(1, flags);
+  EEPROM.write(2, current_face);
 }
 
 void State::update() {

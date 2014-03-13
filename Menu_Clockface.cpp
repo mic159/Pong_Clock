@@ -21,7 +21,8 @@ ClockfaceMenu::ClockfaceMenu()
 , faceType(FACE_PONG)
 , face(NULL)
 {
-  face = new ClockfacePong();
+  faceType = state.current_face;
+  changeMenu();
   uint8_t hour = state.now.hour();
   if (!state.mode24h && hour > 12) {
     hour = hour - 12;
@@ -49,7 +50,10 @@ void ClockfaceMenu::draw(Adafruit_GFX* display) const {
 
 void ClockfaceMenu::button1() {
   faceType = (faceType + 1) % FACE_MAX;
+  changeMenu();
+}
 
+void ClockfaceMenu::changeMenu() {
   // Switch object
   if (face) {
     delete face;
@@ -73,6 +77,9 @@ void ClockfaceMenu::button1() {
     hour = hour - 12;
   }
   face->begin(hour, state.now.minute());
+
+  state.current_face = faceType;
+  state.save();
 }
 
 void ClockfaceMenu::button2() {

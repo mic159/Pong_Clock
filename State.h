@@ -26,6 +26,7 @@ struct State {
   // Settings
   bool mode24h;
   bool dim;
+  uint8_t current_face;
 
 private:
   unsigned long timeLastUpdated;
