@@ -67,6 +67,7 @@ ClockfaceTetris::ClockfaceTetris()
 , targetX(5)
 {
   memset(board, 0, sizeof(board));
+  decideMove();
 }
 
 void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
