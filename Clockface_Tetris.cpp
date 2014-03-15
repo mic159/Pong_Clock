@@ -14,7 +14,9 @@
 #define HEIGHT 64
 
 #define BOARD_HEIGHT 20
-#define BOARD_WIDTH 16
+#define BOARD_WIDTH 10
+
+#define BOARD_OFFSET_X 20
 
 #define PEICE_MAX_HEIGHT 4
 #define PEICE_MAX_WIDTH 2
@@ -74,7 +76,7 @@ void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
   if (checkCollision(0, 1)) {
     tileToBoard();
     y = 0;
-    x = random(0, BOARD_WIDTH - PEICE_MAX_WIDTH);
+    x = random(0, BOARD_WIDTH - PEICE_MAX_WIDTH + 1);
     peice = random(0, PEICE_NUM);
     if (checkCollision(0, 0)) {
       // Game Over
@@ -108,6 +110,7 @@ bool ClockfaceTetris::checkCollision(int8_t xd, int8_t yd) const {
   return false;
 }
 
+// Render the current peice onto the board bitmap
 void ClockfaceTetris::tileToBoard() {
   for (uint8_t iy=0; iy < PEICE_MAX_HEIGHT; ++iy) {
     for (uint8_t ix=0; ix < PEICE_MAX_WIDTH; ++ix) {
@@ -121,24 +124,30 @@ void ClockfaceTetris::tileToBoard() {
 void ClockfaceTetris::draw(Adafruit_GFX* display) const {
   char buff[8];
 
-  display->drawRect(10 - 1, 0, BOARD_WIDTH * 3, BOARD_HEIGHT * 3, WHITE);
+  // Game boarder
+  display->drawFastVLine(BOARD_OFFSET_X - 2, 0, BOARD_HEIGHT * 3, WHITE);
+  display->drawFastVLine(BOARD_OFFSET_X + BOARD_WIDTH * 3, 0, BOARD_HEIGHT * 3, WHITE);
+  display->drawFastHLine(BOARD_OFFSET_X - 2, BOARD_HEIGHT * 3, BOARD_WIDTH * 3 + 3, WHITE);
+
+  // Board bitmap
   for (uint8_t iy=0; iy < BOARD_HEIGHT; ++iy) {
     for (uint8_t ix=0; ix < BOARD_WIDTH; ++ix) {
       if (board[iy] & _BV(ix)) {
-        display->fillRect(ix * 3 + 10, iy * 3, 2, 2, WHITE);
+        display->fillRect(ix * 3 + BOARD_OFFSET_X, iy * 3, 2, 2, WHITE);
       }
     }
   }
 
+  // Current peice
   for (uint8_t iy=0; iy < PEICE_MAX_HEIGHT; ++iy) {
     for (uint8_t ix=0; ix < PEICE_MAX_WIDTH; ++ix) {
       if (pgm_read_byte(gfx + (peice * PEICE_MAX_HEIGHT) + iy) & _BV(ix)) {
-        display->drawRect((ix + x) * 3 + 10, (iy + y) * 3, 2, 2, WHITE);
+        display->fillRect((ix + x) * 3 + BOARD_OFFSET_X, (iy + y) * 3, 2, 2, WHITE);
       }
     }
   }
-  
-  // Clock
+
+  // Time
   display->setTextColor(WHITE);
   display->setTextSize(1);
   display->setCursor(70, 2);
@@ -156,13 +165,14 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
       );
   }
   display->print(buff);
+
+  // Date
   display->setCursor(70, 20);
   display->print(F("Date:"));
   display->setCursor(80, 28);
   display->print(state.now.day());
   display->print(' ');
   display->print(state.getMonthStr(state.now.month()));
-  display->print(' ');
   //display->print(state.getDayStr(state.now.dayOfWeek()));
 }
 
