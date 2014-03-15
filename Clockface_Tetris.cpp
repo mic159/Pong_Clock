@@ -64,24 +64,31 @@ ClockfaceTetris::ClockfaceTetris()
 , rotation(0)
 , x(5), y(0)
 , timer(0)
+, targetX(5)
 {
   memset(board, 0, sizeof(board));
 }
 
 void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
-  // Decide move
-  
+  // AI
+  if (x < targetX && !checkCollision(1, 0)) {
+    x += 1;
+  } else if (x > targetX && !checkCollision(-1, 0)) {
+    x -= 1;
+  }
 
   // Game logic
   if (checkCollision(0, 1)) {
     tileToBoard();
+    clearLines();
     y = 0;
-    x = random(0, BOARD_WIDTH - PEICE_MAX_WIDTH + 1);
+    x = 5;
     peice = random(0, PEICE_NUM);
     if (checkCollision(0, 0)) {
       // Game Over
       memset(board, 0, sizeof(board));
     }
+    decideMove();
   } else {
     y += 1;
   }
@@ -90,6 +97,8 @@ void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
 bool ClockfaceTetris::checkCollision(int8_t xd, int8_t yd) const {
   // Out of bounds?
   if (y + yd >= BOARD_HEIGHT) return true;
+  if (x + xd < 0) return true;
+  if (x + xd >= BOARD_WIDTH) return true;
 
   for (uint8_t iy=0; iy < PEICE_MAX_HEIGHT; ++iy) {
     for (uint8_t ix=0; ix < PEICE_MAX_WIDTH; ++ix) {
@@ -107,6 +116,7 @@ bool ClockfaceTetris::checkCollision(int8_t xd, int8_t yd) const {
     }
   }
 
+  // Didnt find any collisions.
   return false;
 }
 
@@ -119,6 +129,37 @@ void ClockfaceTetris::tileToBoard() {
       }
     }
   }
+}
+
+void ClockfaceTetris::clearLines() {
+  // Generate a bitmask with all 1s where we expect a peice.
+  uint16_t mask = (1 << BOARD_WIDTH) - 1;
+  for (uint8_t iy = BOARD_HEIGHT - 1; iy != 0; --iy) {
+    if (board[iy] == mask) {
+      // CLAER!
+      for (uint8_t jy = iy; jy != 0; --jy) {
+        board[jy] = board[jy - 1];
+      }
+    }
+  }
+}
+
+// The AI.
+void ClockfaceTetris::decideMove() {
+  uint8_t bestDepth = 0;
+  uint8_t bestX = 0;
+  for (int8_t i = 0; i < BOARD_WIDTH; ++i) {
+    for (int8_t iy = 1; iy < BOARD_HEIGHT; ++iy) {
+      if (checkCollision(i - x, iy)) {
+        if (iy > bestDepth) {
+          bestDepth = iy;
+          bestX = i;
+        }
+        break;
+      }
+    }
+  }
+  targetX = bestX;
 }
 
 void ClockfaceTetris::draw(Adafruit_GFX* display) const {

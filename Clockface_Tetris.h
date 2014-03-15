@@ -10,12 +10,23 @@ public:
   void update(uint8_t hour, uint8_t minute);
   void draw(Adafruit_GFX* display) const;
 private:
+  // Check to see if the current peice would collide with the board
+  // if the position was modified by "xd" and "yd".
   bool checkCollision(int8_t xd, int8_t yd) const;
+  // For when the peice hits the bottom, make it stick.
   void tileToBoard();
+  // AI.
+  // Called at the start of a peice to decide where to place it.
+  void decideMove();
+  // Check the board for lines to clear out after putting a
+  // new peice on.
+  void clearLines();
+
   uint16_t board[20];
   uint8_t peice, rotation;
   int8_t x, y;
   uint8_t timer;
+  int8_t targetX;
 };
 
 #endif
