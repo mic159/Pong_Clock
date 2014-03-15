@@ -138,9 +138,15 @@ void ClockfaceTetris::clearLines() {
   for (uint8_t iy = BOARD_HEIGHT - 1; iy != 0; --iy) {
     if (board[iy] == mask) {
       // CLAER!
+
+      // Shift down lines
       for (uint8_t jy = iy; jy != 0; --jy) {
         board[jy] = board[jy - 1];
       }
+      board[0] = 0;
+
+      // Check the same line next iteration
+      iy += 1;
     }
   }
 }
