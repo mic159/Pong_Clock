@@ -195,12 +195,23 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
     }
   }
 
-  // Time
+  // Text
   display->setTextColor(WHITE);
+  display->setCursor(56, 0);
+  display->setTextSize(2);
+  display->print(F("TETRIS"));
+
+  // Score
   display->setTextSize(1);
-  display->setCursor(70, 2);
-  display->print(F("Time:"));
-  display->setCursor(80, 10);
+  display->setCursor(55, 20);
+  display->print(F("Score: "));
+  display->print(2000);
+
+  // Time
+  display->setCursor(55, 45);
+  display->setTextSize(1);
+  display->print(state.getDayStr(state.now.dayOfWeek()));
+  display->print(F("  "));
   if (state.mode24h) {
     snprintf_P(buff, 7, PSTR("%02d:%02d"), state.now.hour(), state.now.minute());
   } else {
@@ -215,12 +226,11 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
   display->print(buff);
 
   // Date
-  display->setCursor(70, 20);
-  display->print(F("Date:"));
-  display->setCursor(80, 28);
+  display->setCursor(55, 54);
   display->print(state.now.day());
   display->print(' ');
   display->print(state.getMonthStr(state.now.month()));
-  //display->print(state.getDayStr(state.now.dayOfWeek()));
+  display->print(' ');
+  display->print(state.now.year());
 }
 
