@@ -63,7 +63,8 @@ ClockfaceTetris::ClockfaceTetris()
 : peice(0)
 , rotation(0)
 , x(5), y(0)
-, timer(0)
+, score(0)
+, highscore(0)
 , targetX(5)
 {
   memset(board, 0, sizeof(board));
@@ -81,13 +82,18 @@ void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
   // Game logic
   if (checkCollision(0, 1)) {
     tileToBoard();
+    score += 5;
     clearLines();
     y = 0;
     x = 5;
     peice = random(0, PEICE_NUM);
     if (checkCollision(0, 0)) {
       // Game Over
+      if (score > highscore) {
+        highscore = score;
+      }
       memset(board, 0, sizeof(board));
+      score = 0;
     }
     decideMove();
   } else {
@@ -138,6 +144,7 @@ void ClockfaceTetris::clearLines() {
   for (uint8_t iy = BOARD_HEIGHT - 1; iy != 0; --iy) {
     if (board[iy] == mask) {
       // CLAER!
+      score += 100;
 
       // Shift down lines
       for (uint8_t jy = iy; jy != 0; --jy) {
@@ -204,8 +211,11 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
   // Score
   display->setTextSize(1);
   display->setCursor(55, 20);
-  display->print(F("Score: "));
-  display->print(2000);
+  display->print(F("Score:"));
+  display->print(score);
+  display->setCursor(55, 28);
+  display->print(F("High: "));
+  display->print(highscore);
 
   // Time
   display->setCursor(55, 45);

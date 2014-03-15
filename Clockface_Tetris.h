@@ -25,7 +25,7 @@ private:
   uint16_t board[20];
   uint8_t peice, rotation;
   int8_t x, y;
-  uint8_t timer;
+  uint16_t score, highscore;
   int8_t targetX;
 };
 
