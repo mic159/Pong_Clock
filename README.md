@@ -35,3 +35,5 @@ The library for the display buffers the entire screen in RAM, which uses up half
 One of the other main uses of RAM is usually strings.
 To combat this, I have used PROGMEM strings everywhere, mostly by using the FlashStringHelper (the F macro) method.
 
+Unfortunately, virtual methods on classes also use up a bunch of RAM, so I have some uglyness in Menu.cpp to do it all manually.
+
