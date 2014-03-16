@@ -12,7 +12,7 @@ public:
 private:
   // Check to see if the current peice would collide with the board
   // if the position was modified by "xd" and "yd".
-  bool checkCollision(int8_t xd, int8_t yd) const;
+  bool checkCollision(int8_t xd, int8_t yd, uint8_t r) const;
   // For when the peice hits the bottom, make it stick.
   void tileToBoard();
   // AI.
@@ -27,6 +27,7 @@ private:
   int8_t x, y;
   uint16_t score, highscore;
   int8_t targetX;
+  uint8_t targetRotation;
 };
 
 #endif

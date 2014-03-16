@@ -19,43 +19,155 @@
 #define BOARD_OFFSET_X 20
 
 #define PEICE_MAX_HEIGHT 4
-#define PEICE_MAX_WIDTH 2
+#define PEICE_MAX_WIDTH 4
 #define PEICE_NUM 7
 
-uint8_t PROGMEM gfx[PEICE_NUM * PEICE_MAX_HEIGHT] = {
+const uint8_t PROGMEM gfx[PEICE_NUM * PEICE_MAX_HEIGHT * 4] = {
+  // Square
     0b00000011
   , 0b00000011
   , 0b00000000
   , 0b00000000
+  
+  , 0b00000011
+  , 0b00000011
+  , 0b00000000
+  , 0b00000000
+  
+  , 0b00000011
+  , 0b00000011
+  , 0b00000000
+  , 0b00000000
+  
+  , 0b00000011
+  , 0b00000011
+  , 0b00000000
+  , 0b00000000
+
+  // Long
+  , 0b00000001
+  , 0b00000001
+  , 0b00000001
+  , 0b00000001
+
+  , 0b00001111
+  , 0b00000000
+  , 0b00000000
+  , 0b00000000
 
   , 0b00000001
   , 0b00000001
   , 0b00000001
   , 0b00000001
+
+  , 0b00001111
+  , 0b00000000
+  , 0b00000000
+  , 0b00000000
+
+  // S
+  , 0b00000010
+  , 0b00000011
+  , 0b00000001
+  , 0b00000000
+
+  , 0b00000011
+  , 0b00000110
+  , 0b00000000
+  , 0b00000000
 
   , 0b00000010
   , 0b00000011
   , 0b00000001
   , 0b00000000
 
+  , 0b00000011
+  , 0b00000110
+  , 0b00000000
+  , 0b00000000
+
+  // Z
   , 0b00000001
   , 0b00000011
   , 0b00000010
   , 0b00000000
 
+  , 0b00000110
+  , 0b00000011
+  , 0b00000000
+  , 0b00000000
+
+  , 0b00000001
+  , 0b00000011
+  , 0b00000010
+  , 0b00000000
+
+  , 0b00000110
+  , 0b00000011
+  , 0b00000000
+  , 0b00000000
+
+  // L
   , 0b00000011
   , 0b00000001
   , 0b00000001
   , 0b00000000
 
   , 0b00000001
+  , 0b00000111
+  , 0b00000000
+  , 0b00000000
+
+  , 0b00000010
+  , 0b00000010
+  , 0b00000011
+  , 0b00000000
+
+  , 0b00000111
+  , 0b00000100
+  , 0b00000000
+  , 0b00000000
+
+  // 1
+  , 0b00000001
   , 0b00000001
   , 0b00000011
   , 0b00000000
 
+  , 0b00000100
+  , 0b00000111
+  , 0b00000000
+  , 0b00000000
+
+  , 0b00000011
+  , 0b00000010
+  , 0b00000010
+  , 0b00000000
+
+  , 0b00000111
+  , 0b00000001
+  , 0b00000000
+  , 0b00000000
+
+  // T
   , 0b00000001
   , 0b00000011
   , 0b00000001
+  , 0b00000000
+
+  , 0b00000010
+  , 0b00000111
+  , 0b00000000
+  , 0b00000000
+
+  , 0b00000010
+  , 0b00000011
+  , 0b00000010
+  , 0b00000000
+
+  , 0b00000111
+  , 0b00000010
+  , 0b00000000
   , 0b00000000
 };
 
@@ -66,6 +178,7 @@ ClockfaceTetris::ClockfaceTetris()
 , score(0)
 , highscore(0)
 , targetX(5)
+, targetRotation(0)
 {
   memset(board, 0, sizeof(board));
   decideMove();
@@ -73,21 +186,25 @@ ClockfaceTetris::ClockfaceTetris()
 
 void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
   // AI
-  if (x < targetX && !checkCollision(1, 0)) {
+  if (x < targetX && !checkCollision(1, 0, rotation)) {
     x += 1;
-  } else if (x > targetX && !checkCollision(-1, 0)) {
+  } else if (x > targetX && !checkCollision(-1, 0, rotation)) {
     x -= 1;
+  }
+  
+  if (rotation != targetRotation && !checkCollision(0, 0, (rotation + 1) % 4)) {
+    rotation = (rotation + 1) % 4;
   }
 
   // Game logic
-  if (checkCollision(0, 1)) {
+  if (checkCollision(0, 1, rotation)) {
     tileToBoard();
     score += 5;
     clearLines();
     y = 0;
     x = 5;
     peice = random(0, PEICE_NUM);
-    if (checkCollision(0, 0)) {
+    if (checkCollision(0, 0, rotation)) {
       // Game Over
       if (score > highscore) {
         highscore = score;
@@ -101,15 +218,16 @@ void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
   }
 }
 
-bool ClockfaceTetris::checkCollision(int8_t xd, int8_t yd) const {
+bool ClockfaceTetris::checkCollision(int8_t xd, int8_t yd, uint8_t r) const {
   // Out of bounds?
   if (y + yd >= BOARD_HEIGHT) return true;
   if (x + xd < 0) return true;
   if (x + xd >= BOARD_WIDTH) return true;
 
   for (uint8_t iy=0; iy < PEICE_MAX_HEIGHT; ++iy) {
+    uint8_t row = pgm_read_byte(gfx + (peice * 4 + r) * PEICE_MAX_HEIGHT + iy);
     for (uint8_t ix=0; ix < PEICE_MAX_WIDTH; ++ix) {
-      if (pgm_read_byte(gfx + (peice * PEICE_MAX_HEIGHT) + iy) & _BV(ix)) {
+      if (row & _BV(ix)) {
         // Bounds
         if (y + yd + iy >= BOARD_HEIGHT) return true;
         if (y + yd + iy < 0) return true;
@@ -130,8 +248,9 @@ bool ClockfaceTetris::checkCollision(int8_t xd, int8_t yd) const {
 // Render the current peice onto the board bitmap
 void ClockfaceTetris::tileToBoard() {
   for (uint8_t iy=0; iy < PEICE_MAX_HEIGHT; ++iy) {
+    uint8_t row = pgm_read_byte(gfx + (peice * 4 + rotation) * PEICE_MAX_HEIGHT + iy);
     for (uint8_t ix=0; ix < PEICE_MAX_WIDTH; ++ix) {
-      if (pgm_read_byte(gfx + (peice * PEICE_MAX_HEIGHT) + iy) & _BV(ix)) {
+      if (row & _BV(ix)) {
         board[y + iy] |= _BV(x + ix);
       }
     }
@@ -162,18 +281,23 @@ void ClockfaceTetris::clearLines() {
 void ClockfaceTetris::decideMove() {
   uint8_t bestDepth = 0;
   uint8_t bestX = 0;
-  for (int8_t i = 0; i < BOARD_WIDTH; ++i) {
-    for (int8_t iy = 1; iy < BOARD_HEIGHT; ++iy) {
-      if (checkCollision(i - x, iy)) {
-        if (iy > bestDepth) {
-          bestDepth = iy;
-          bestX = i;
-        }
-        break;
-      }
-    }
+  uint8_t bestR = 0;
+  for (uint8_t r = 0; r < 4; ++r) {
+	  for (int8_t i = 0; i < BOARD_WIDTH; ++i) {
+		for (int8_t iy = 1; iy < BOARD_HEIGHT; ++iy) {
+		  if (checkCollision(i - x, iy, r)) {
+		    if (iy > bestDepth) {
+		      bestDepth = iy;
+		      bestX = i;
+		      bestR = r;
+		    }
+		    break;
+		  }
+		}
+	  }
   }
   targetX = bestX;
+  targetRotation = bestR;
 }
 
 void ClockfaceTetris::draw(Adafruit_GFX* display) const {
@@ -195,8 +319,9 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
 
   // Current peice
   for (uint8_t iy=0; iy < PEICE_MAX_HEIGHT; ++iy) {
+    uint8_t row = pgm_read_byte(gfx + (peice * 4 + rotation) * PEICE_MAX_HEIGHT + iy);
     for (uint8_t ix=0; ix < PEICE_MAX_WIDTH; ++ix) {
-      if (pgm_read_byte(gfx + (peice * PEICE_MAX_HEIGHT) + iy) & _BV(ix)) {
+      if (row & _BV(ix)) {
         display->fillRect((ix + x) * 3 + BOARD_OFFSET_X, (iy + y) * 3, 2, 2, WHITE);
       }
     }
