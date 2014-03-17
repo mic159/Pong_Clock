@@ -26,22 +26,22 @@ const uint8_t PROGMEM gfx[PEICE_NUM * PEICE_MAX_HEIGHT * 4] = {
   // Square
     0b00000011
   , 0b00000011
-  , 0b00000000
-  , 0b00000000
-  
-  , 0b00000011
-  , 0b00000011
-  , 0b00000000
+  , 0b00110000
   , 0b00000000
   
   , 0b00000011
   , 0b00000011
-  , 0b00000000
+  , 0b00110000
   , 0b00000000
   
   , 0b00000011
   , 0b00000011
+  , 0b00110000
   , 0b00000000
+  
+  , 0b00000011
+  , 0b00000011
+  , 0b00110000
   , 0b00000000
 
   // Long
@@ -51,7 +51,7 @@ const uint8_t PROGMEM gfx[PEICE_NUM * PEICE_MAX_HEIGHT * 4] = {
   , 0b00000001
 
   , 0b00001111
-  , 0b00000000
+  , 0b11110000
   , 0b00000000
   , 0b00000000
 
@@ -61,113 +61,113 @@ const uint8_t PROGMEM gfx[PEICE_NUM * PEICE_MAX_HEIGHT * 4] = {
   , 0b00000001
 
   , 0b00001111
-  , 0b00000000
+  , 0b11110000
   , 0b00000000
   , 0b00000000
 
   // S
   , 0b00000010
   , 0b00000011
-  , 0b00000001
-  , 0b00000000
+  , 0b00100001
+  , 0b00010000
 
   , 0b00000011
-  , 0b00000110
-  , 0b00000000
+  , 0b00010110
+  , 0b01100000
   , 0b00000000
 
   , 0b00000010
   , 0b00000011
-  , 0b00000001
-  , 0b00000000
+  , 0b00100001
+  , 0b00010000
 
   , 0b00000011
-  , 0b00000110
-  , 0b00000000
+  , 0b00010110
+  , 0b01100000
   , 0b00000000
 
   // Z
   , 0b00000001
   , 0b00000011
-  , 0b00000010
-  , 0b00000000
+  , 0b00010010
+  , 0b00100000
 
   , 0b00000110
-  , 0b00000011
-  , 0b00000000
+  , 0b01000011
+  , 0b00110000
   , 0b00000000
 
   , 0b00000001
   , 0b00000011
-  , 0b00000010
-  , 0b00000000
+  , 0b00010010
+  , 0b00100000
 
   , 0b00000110
-  , 0b00000011
-  , 0b00000000
+  , 0b01000011
+  , 0b00110000
   , 0b00000000
 
   // L
   , 0b00000011
+  , 0b00100001
   , 0b00000001
-  , 0b00000001
-  , 0b00000000
+  , 0b00010000
 
   , 0b00000001
   , 0b00000111
-  , 0b00000000
+  , 0b01110000
   , 0b00000000
 
   , 0b00000010
   , 0b00000010
   , 0b00000011
-  , 0b00000000
+  , 0b00110000
 
   , 0b00000111
-  , 0b00000100
-  , 0b00000000
+  , 0b00110100
+  , 0b01000000
   , 0b00000000
 
   // 1
   , 0b00000001
   , 0b00000001
   , 0b00000011
-  , 0b00000000
+  , 0b00110000
 
   , 0b00000100
   , 0b00000111
-  , 0b00000000
+  , 0b01110000
   , 0b00000000
 
   , 0b00000011
+  , 0b00010010
   , 0b00000010
-  , 0b00000010
-  , 0b00000000
+  , 0b00100000
 
   , 0b00000111
-  , 0b00000001
-  , 0b00000000
+  , 0b01100001
+  , 0b00010000
   , 0b00000000
 
   // T
   , 0b00000001
   , 0b00000011
-  , 0b00000001
-  , 0b00000000
+  , 0b00100001
+  , 0b00010000
 
   , 0b00000010
   , 0b00000111
-  , 0b00000000
+  , 0b01110000
   , 0b00000000
 
   , 0b00000010
   , 0b00000011
-  , 0b00000010
-  , 0b00000000
+  , 0b00010010
+  , 0b00100000
 
   , 0b00000111
-  , 0b00000010
-  , 0b00000000
+  , 0b01010010
+  , 0b00100000
   , 0b00000000
 };
 
@@ -278,24 +278,81 @@ void ClockfaceTetris::clearLines() {
   }
 }
 
+// Find out the height of a peice.
+// Used in the AI only.
+uint8_t ClockfaceTetris::getPeiceHeight(uint8_t peice, uint8_t r) const {
+  if (peice == 0) {
+    // Square
+    return 2;
+  } else if (peice == 1) {
+    // I
+    if (r == 0 || r == 2) {
+      return 4;
+    }
+    return 1;
+  } else {
+    // Everything else
+    if (r == 0 || r == 2) {
+      return 3;
+    }
+    return 2;
+  }
+}
+
+// For the AI.
+// Check directly underneath the tile to see if its leaving gaps.
+// Returns the count of empty squares it is about to block.
+uint8_t ClockfaceTetris::blockingMetric(int8_t xd, int8_t yd, uint8_t r) const {
+  uint8_t metric = 0;
+
+  for (int8_t iy=0; iy < PEICE_MAX_HEIGHT; ++iy) {
+    uint8_t row = pgm_read_byte(gfx + (peice * 4 + r) * PEICE_MAX_HEIGHT + iy);
+    for (int8_t ix=0; ix < PEICE_MAX_WIDTH; ++ix) {
+      if (row & _BV(ix + 4)) {
+        // Bounds
+        if (   y + yd + iy >= BOARD_HEIGHT
+            || y + yd + iy < 0
+            || x + xd + ix >= BOARD_WIDTH
+            || x + xd + ix < 0) {
+          continue;
+        }
+        // If the tile is empty here, we have a problem.
+        // increase the counter!
+        if (!(board[y + iy + yd] & _BV(x + xd + ix))) {
+          metric += 1;
+        }
+      }
+    }
+  }
+
+  return metric;
+}
+
 // The AI.
 void ClockfaceTetris::decideMove() {
-  uint8_t bestDepth = 0;
+  int8_t bestScore = 0;
   uint8_t bestX = 0;
   uint8_t bestR = 0;
   for (uint8_t r = 0; r < 4; ++r) {
-	  for (int8_t i = 0; i < BOARD_WIDTH; ++i) {
-		for (int8_t iy = 1; iy < BOARD_HEIGHT; ++iy) {
-		  if (checkCollision(i - x, iy, r)) {
-		    if (iy > bestDepth) {
-		      bestDepth = iy;
-		      bestX = i;
-		      bestR = r;
-		    }
-		    break;
-		  }
-		}
-	  }
+    uint8_t peiceHeight = getPeiceHeight(peice, r);
+    for (int8_t i = 0; i < BOARD_WIDTH; ++i) {
+      // Scan downwards to find the bottom
+      for (int8_t iy = 1; iy < BOARD_HEIGHT; ++iy) {
+        // Stop when we hit the bottom
+        if (checkCollision(i - x, iy, r)) {
+          // The score we use to choose the best position is
+          // how far down the screen will it make it, and will
+          // it block access to empty squares.
+          int8_t score = peiceHeight + iy - blockingMetric(i - x, iy - 1, r);
+          if (score > bestScore) {
+            bestScore = score;
+            bestX = i;
+            bestR = r;
+          }
+          break;
+        }
+      }
+    }
   }
   targetX = bestX;
   targetRotation = bestR;

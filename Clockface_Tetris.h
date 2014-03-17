@@ -18,6 +18,8 @@ private:
   // AI.
   // Called at the start of a peice to decide where to place it.
   void decideMove();
+  uint8_t getPeiceHeight(uint8_t peice, uint8_t r) const;
+  uint8_t blockingMetric(int8_t xd, int8_t yd, uint8_t r) const;
   // Check the board for lines to clear out after putting a
   // new peice on.
   void clearLines();
