@@ -16,7 +16,7 @@
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
 
-#define BOARD_OFFSET_X 20
+#define BOARD_OFFSET_X 15
 
 #define PEICE_MAX_HEIGHT 4
 #define PEICE_MAX_WIDTH 4
@@ -329,43 +329,51 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
 
   // Text
   display->setTextColor(WHITE);
-  display->setCursor(56, 0);
+  display->setCursor(54, 0);
   display->setTextSize(2);
-  display->print(F("TETRIS"));
-
-  // Score
-  display->setTextSize(1);
-  display->setCursor(55, 20);
-  display->print(F("Score:"));
-  display->print(score);
-  display->setCursor(55, 28);
-  display->print(F("High: "));
-  display->print(highscore);
 
   // Time
-  display->setCursor(55, 45);
-  display->setTextSize(1);
-  display->print(state.getDayStr(state.now.dayOfWeek()));
-  display->print(F("  "));
   if (state.mode24h) {
     snprintf_P(buff, 7, PSTR("%02d:%02d"), state.now.hour(), state.now.minute());
   } else {
     uint8_t hour = state.now.hour() % 12;
     if (hour == 0) hour = 12;
-    snprintf_P(buff, 7, PSTR("%02d:%02d%c"),
+    snprintf_P(buff, 7, PSTR("%02d:%02d"),
       hour,
-      state.now.minute(),
-      state.now.hour() > 11 ? 'p' : 'a'
+      state.now.minute()
       );
   }
   display->print(buff);
 
+  // am/pm suffix
+  display->setTextSize(1);
+  if (!state.mode24h) {
+    display->setCursor(115, 8);
+    if (state.now.hour() > 11) {
+      display->print(F("pm"));
+    } else {
+      display->print(F("am"));
+    }
+  }
+
+  display->setCursor(55, 17);
+  display->print(state.getDayStr(state.now.dayOfWeek()));
+
   // Date
-  display->setCursor(55, 54);
+  display->setCursor(55, 25);
   display->print(state.now.day());
   display->print(' ');
   display->print(state.getMonthStr(state.now.month()));
   display->print(' ');
   display->print(state.now.year());
+
+  // Score
+  display->setTextSize(1);
+  display->setCursor(55, 40);
+  display->print(F("Score:"));
+  display->print(score);
+  display->setCursor(55, 48);
+  display->print(F("High: "));
+  display->print(highscore);
 }
 
