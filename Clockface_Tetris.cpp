@@ -203,6 +203,7 @@ void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
     clearLines();
     y = 0;
     x = 5;
+    rotation = 0;
     peice = random(0, PEICE_NUM);
     if (checkCollision(0, 0, rotation)) {
       // Game Over
