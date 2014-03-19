@@ -176,7 +176,6 @@ ClockfaceTetris::ClockfaceTetris()
 , rotation(0)
 , x(5), y(0)
 , score(0)
-, highscore(0)
 , targetX(5)
 , targetRotation(0)
 {
@@ -207,8 +206,9 @@ void ClockfaceTetris::update(uint8_t hour, uint8_t minute) {
     peice = random(0, PEICE_NUM);
     if (checkCollision(0, 0, rotation)) {
       // Game Over
-      if (score > highscore) {
-        highscore = score;
+      if (score > state.tetris_highscore) {
+        state.tetris_highscore = score;
+        state.save();
       }
       memset(board, 0, sizeof(board));
       score = 0;
@@ -432,6 +432,6 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
   display->print(score);
   display->setCursor(55, 48);
   display->print(F("High: "));
-  display->print(highscore);
+  display->print(state.tetris_highscore);
 }
 

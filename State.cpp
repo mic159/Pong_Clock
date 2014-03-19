@@ -13,6 +13,7 @@ State::State()
 , mode24h(false)
 , dim(false)
 , current_face(0)
+, tetris_highscore(0)
 {
   byte check = EEPROM.read(0);
   // V1
