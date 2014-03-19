@@ -13,23 +13,29 @@ State::State()
 , mode24h(false)
 , dim(false)
 , current_face(0)
+, enabled_faces(0xFF)
 , tetris_highscore(0)
 {
   byte check = EEPROM.read(0);
   // V1
-  if (check >= 0x41 && check <= 0x42) {
+  if (check >= 0x41 && check <= 0x43) {
     byte flags = EEPROM.read(1);
     mode24h = flags & _BV(0);
     dim = flags & _BV(1);
   }
   // V2
-  if (check == 0x42) {
+  if (check >= 0x42 && check <= 0x43) {
     current_face = EEPROM.read(2);
+  }
+  // V3
+  if (check == 0x43) {
+    enabled_faces = EEPROM.read(3);
+    tetris_highscore = EEPROM.read(4) | EEPROM.read(5) << 8;
   }
 }
 
 void State::save() {
-  EEPROM.write(0, 0x42);
+  EEPROM.write(0, 0x43);
   byte flags = 0;
   if (mode24h)
     flags |= _BV(0);
@@ -37,6 +43,9 @@ void State::save() {
     flags |= _BV(1);
   EEPROM.write(1, flags);
   EEPROM.write(2, current_face);
+  EEPROM.write(3, enabled_faces);
+  EEPROM.write(4, tetris_highscore);
+  EEPROM.write(5, tetris_highscore >> 8);
 }
 
 void State::update() {

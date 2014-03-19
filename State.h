@@ -27,6 +27,7 @@ struct State {
   bool mode24h;
   bool dim;
   uint8_t current_face;
+  uint8_t enabled_faces;
   uint16_t tetris_highscore;
 
 private:

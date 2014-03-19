@@ -9,14 +9,6 @@
 #include "Clockface_Pacman.h"
 #include "Clockface_Tetris.h"
 
-enum FACE {
-  FACE_PONG,
-  FACE_DIGITAL,
-  FACE_PACMAN,
-  FACE_TETRIS,
-
-  FACE_MAX
-};
 
 ClockfaceMenu::ClockfaceMenu()
 : Menu(MENU_CLOCK)
@@ -51,7 +43,9 @@ void ClockfaceMenu::draw(Adafruit_GFX* display) const {
 }
 
 void ClockfaceMenu::button1() {
+  do {
   faceType = (faceType + 1) % FACE_MAX;
+  } while (!(state.enabled_faces & _BV(faceType)));
   changeMenu();
 }
 

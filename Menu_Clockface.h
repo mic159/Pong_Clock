@@ -6,6 +6,16 @@
 #include "Menu.h"
 #include "Clockface.h"
 
+
+enum FACE {
+  FACE_PONG,
+  FACE_DIGITAL,
+  FACE_PACMAN,
+  FACE_TETRIS,
+
+  FACE_MAX
+};
+
 class ClockfaceMenu : public Menu {
 public:
   ClockfaceMenu();

@@ -6,6 +6,7 @@
 #include "Menu_Settings_Time.h"
 #include "Menu_Settings_Date.h"
 #include "Menu_Settings_Brightness.h"
+#include "Menu_Settings_Clockface.h"
 #include "Menu_Clockface.h"
 #include "State.h"
 
@@ -39,6 +40,8 @@ bool Menu::update() {
       return ((SettingsDateMenu*)this)->update();
     case MENU_SETTINGS_BRIGHTNESS:
       return ((SettingsBrightnessMenu*)this)->update();
+    case MENU_SETTINGS_CLOCKFACE:
+      return ((SettingsClockfaceMenu*)this)->update();
     case MENU_CLOCK:
       return ((ClockfaceMenu*)this)->update();
   }
@@ -61,6 +64,9 @@ void Menu::draw(Adafruit_GFX* display) const {
     case MENU_SETTINGS_BRIGHTNESS:
       ((SettingsBrightnessMenu*)this)->draw(display);
       return;
+    case MENU_SETTINGS_CLOCKFACE:
+      ((SettingsClockfaceMenu*)this)->draw(display);
+      return;
     case MENU_CLOCK:
       ((ClockfaceMenu*)this)->draw(display);
       return;
@@ -79,6 +85,8 @@ void Menu::button1() {
       return ((SettingsDateMenu*)this)->button1();
     case MENU_SETTINGS_BRIGHTNESS:
       return ((SettingsBrightnessMenu*)this)->button1();
+    case MENU_SETTINGS_CLOCKFACE:
+      return ((SettingsClockfaceMenu*)this)->button1();
     case MENU_CLOCK:
       return ((ClockfaceMenu*)this)->button1();
   }
@@ -96,6 +104,8 @@ void Menu::button2() {
       return ((SettingsDateMenu*)this)->button2();
     case MENU_SETTINGS_BRIGHTNESS:
       return ((SettingsBrightnessMenu*)this)->button2();
+    case MENU_SETTINGS_CLOCKFACE:
+      return ((SettingsClockfaceMenu*)this)->button2();
     case MENU_CLOCK:
       return ((ClockfaceMenu*)this)->button2();
   }
@@ -140,6 +150,9 @@ void updateMenuSelection() {
       break;
     case MENU_SETTINGS_BRIGHTNESS:
       menu = new SettingsBrightnessMenu();
+      break;
+    case MENU_SETTINGS_CLOCKFACE:
+      menu = new SettingsClockfaceMenu();
       break;
     case MENU_CLOCK:
       menu = new ClockfaceMenu();
