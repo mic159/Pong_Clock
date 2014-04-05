@@ -9,7 +9,6 @@
  * RTClib https://github.com/mic159/RTClib
  */
 
-#include <Bounce2.h>
 #include <SPI.h>
 #include <Wire.h>
 #include <EEPROM.h>
@@ -17,6 +16,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+#include "Buttons.h"
 #include "Menu.h"
 #include "Menu_Settings.h"
 #include "Menu_Settings_24.h"
@@ -26,19 +26,27 @@
 #include "Menu_Clockface.h"
 #include "State.h"
 
+#define NEXT_PIN   2
+#define SELECT_PIN 3
+
 #define OLED_RESET 4
-#define MINUTE_PIN A1
-#define HOUR_PIN   A2
-#define WIDTH 128
-#define HEIGHT 64
+#define WIDTH      128
+#define HEIGHT     64
 
 // Set this to enable printing debug stats to the screen
 //#define DEBUG_STATS
 
-Bounce btn1;
-Bounce btn2;
+Button btnNext(NEXT_PIN);
+Button btnSelect(SELECT_PIN);
 Adafruit_SSD1306 display(OLED_RESET);
 RTC_DS1307 RTC;
+
+void buttonNextPressed() {
+  btnNext.interrupt();
+}
+void buttonSelectPressed() {
+  btnSelect.interrupt();
+}
 
 State state;
 Menu* menu = NULL;
@@ -57,12 +65,10 @@ void setup(void) {
   }
 
   // Setup buttons
-  pinMode(MINUTE_PIN, INPUT);
-  pinMode(HOUR_PIN, INPUT);
-  btn1.attach(HOUR_PIN);
-  btn2.attach(MINUTE_PIN);
-  btn1.interval(30);
-  btn2.interval(30);
+  pinMode(NEXT_PIN, INPUT);
+  pinMode(SELECT_PIN, INPUT);
+  attachInterrupt(0, buttonSelectPressed, RISING);
+  attachInterrupt(1, buttonNextPressed, RISING);
 
   // Splash
   display.setTextSize(2);
@@ -94,11 +100,11 @@ void loop() {
 #endif
 
   // Buttons
-  if (btn1.update() && btn1.read()) {
+  if (btnNext.update() && btnNext.read()) {
     menu->button1();
     draw = true;
   }
-  if (btn2.update() && btn2.read()) {
+  if (btnSelect.update() && btnSelect.read()) {
     menu->button2();
     draw = true;
   }
