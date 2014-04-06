@@ -1,7 +1,8 @@
 Pong Clock
 ==========
 
-*For hardware revision V2.3, for earlier versions, see the [V2.2](https://github.com/mic159/Pong_Clock/tree/v2.2) branch*
+**This is for hardware revision V2.3**
+*If you have an earlier version, see the [V2.2](https://github.com/mic159/Pong_Clock/tree/v2.2) branch*
 
 This is the Arduino code for 0miker0's Pong Clock.
 It can be purchased at [Tindie](https://www.tindie.com/products/miker/pongclock-complete-kit/ "Pong Clock Complete Kit").

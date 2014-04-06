@@ -3,7 +3,7 @@
  * Code by mic159.
  *
  * FOR HARDWARE REVISION 2.3!
- * earlier revisions should use 2.2 branch.
+ * Earlier revisions should use 2.2 branch.
  *
  * Requirements:
  * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
