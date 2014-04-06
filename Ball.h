@@ -1,7 +1,7 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include <Adafruit_GFX.h>
+class Adafruit_GFX;
 #include "Paddle.h"
 
 struct Ball {

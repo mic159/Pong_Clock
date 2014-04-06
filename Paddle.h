@@ -1,7 +1,7 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-#include <Adafruit_GFX.h>
+class Adafriut_GFX;
 
 struct Paddle {
   Paddle(int16_t x, int16_t y);
