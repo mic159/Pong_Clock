@@ -31,13 +31,13 @@ void ClockfaceDigital::draw(Adafruit_GFX* display) const {
   // Hour:Minute
   display->setTextColor(WHITE);
   display->setTextSize(2);
-  display->setCursor(10, 18);
+  display->setCursor(5, 18);
   display->print(buff);
 
   // am/pm suffix
   display->setTextSize(1);
   if (!state.mode24h) {
-    display->setCursor(70, 25);
+    display->setCursor(65, 25);
     if (state.now.hour() > 11) {
       display->print(F("pm"));
     } else {
@@ -49,18 +49,16 @@ void ClockfaceDigital::draw(Adafruit_GFX* display) const {
   display->fillRect(0, 35, map(state.now.second(), 0, 60, 0, WIDTH), 3, WHITE);
 
   // Day of week
-  display->setCursor(105, 18);
-  display->print((uint8_t)state.temperature);
-  display->drawCircle(118, 19, 1, WHITE);
-  display->setCursor(105, 26);
+  display->setCursor(82, 18);
   display->print(state.getDayStr(state.now.dayOfWeek()));
+  display->print(' ');
+  display->print((uint8_t)state.temperature);
+  display->drawCircle(120, 19, 1, WHITE);
 
   // Date
-  display->setCursor(57, 40);
+  display->setCursor(88, 26);
   snprintf_P(buff, 9, PSTR("%2u"), state.now.day());
   display->print(buff);
   display->print(' ');
   display->print(state.getMonthStr(state.now.month()));
-  display->print(' ');
-  display->print(state.now.year());
 }
