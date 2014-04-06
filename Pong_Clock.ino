@@ -2,8 +2,10 @@
  * Pongclock Code for 0miker0's Pong Clock.
  * Code by mic159.
  *
+ * FOR HARDWARE REVISION 2.3!
+ * earlier revisions should use 2.2 branch.
+ *
  * Requirements:
- * Bounce2 https://github.com/mic159/Bounce-Arduino-Wiring
  * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
  * Adafriut SSD1306 https://github.com/adafruit/Adafruit_SSD1306
  * RTClib https://github.com/mic159/RTClib

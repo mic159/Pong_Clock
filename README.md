@@ -1,6 +1,8 @@
 Pong Clock
 ==========
 
+*For hardware revision V2.3, for earlier versions, see the [V2.2](https://github.com/mic159/Pong_Clock/tree/v2.2) branch*
+
 This is the Arduino code for 0miker0's Pong Clock.
 It can be purchased at [Tindie](https://www.tindie.com/products/miker/pongclock-complete-kit/ "Pong Clock Complete Kit").
 
@@ -19,13 +21,11 @@ Mike uses [this one from sparkfun](https://www.sparkfun.com/products/9873)
 Requirements
 ------------
 
- * Bounce2 https://github.com/mic159/Bounce-Arduino-Wiring
  * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
  * Adafriut SSD1306 https://github.com/adafruit/Adafruit_SSD1306
  * RTClib https://github.com/mic159/RTClib
 
-**NOTE:** Some are using my forks. This was because I made some modifications to reduce RAM usage.
-I have submitted pull requests and hope to remove the need for my forks.
+**NOTE:** RTClib is using my fork. This was because I made some modifications to reduce RAM usage.
 
 Arduino SRAM
 ------------
