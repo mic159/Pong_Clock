@@ -63,9 +63,9 @@ void SettingsClockfaceMenu::draw(Adafruit_GFX* display) const {
       case FACE_DIGITAL:
         display->print(F(" Digital"));
         break;
-      case FACE_PACMAN:
-        display->print(F(" Pacman"));
-        break;
+//      case FACE_PACMAN:
+//        display->print(F(" Pacman"));
+//        break;
       case FACE_TETRIS:
         display->print(F(" Tetris"));
         break;

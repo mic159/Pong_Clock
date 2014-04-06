@@ -6,7 +6,7 @@
 #include "State.h"
 #include "Clockface_Pong.h"
 #include "Clockface_Digital.h"
-#include "Clockface_Pacman.h"
+//#include "Clockface_Pacman.h"
 #include "Clockface_Tetris.h"
 
 
@@ -16,6 +16,7 @@ ClockfaceMenu::ClockfaceMenu()
 , face(NULL)
 {
   faceType = state.current_face;
+  if (faceType >= FACE_MAX) faceType = 0;
   changeMenu();
   uint8_t hour = state.now.hour();
   if (!state.mode24h && hour > 12) {
@@ -62,9 +63,9 @@ void ClockfaceMenu::changeMenu() {
   case FACE_DIGITAL:
     face = new ClockfaceDigital();
     break;
-  case FACE_PACMAN:
-    face = new ClockfacePacman();
-    break;
+//  case FACE_PACMAN:
+//    face = new ClockfacePacman();
+//    break;
   case FACE_TETRIS:
     face = new ClockfaceTetris();
     break;
