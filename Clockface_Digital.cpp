@@ -49,15 +49,18 @@ void ClockfaceDigital::draw(Adafruit_GFX* display) const {
   display->fillRect(0, 35, map(state.now.second(), 0, 60, 0, WIDTH), 3, WHITE);
 
   // Day of week
-  //display->setCursor(106, 10);
-  //display->print(state.getDayStr(state.now.dayOfWeek()));
+  display->setCursor(105, 18);
+  display->print((uint8_t)state.temperature);
+  display->drawCircle(118, 19, 1, WHITE);
+  display->setCursor(105, 26);
+  display->print(state.getDayStr(state.now.dayOfWeek()));
 
   // Date
-  display->setCursor(88, 18);
+  display->setCursor(57, 40);
   snprintf_P(buff, 9, PSTR("%2u"), state.now.day());
   display->print(buff);
   display->print(' ');
   display->print(state.getMonthStr(state.now.month()));
-  display->setCursor(100, 26);
+  display->print(' ');
   display->print(state.now.year());
 }

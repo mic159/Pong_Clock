@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include <EEPROM.h>
 #include "State.h"
 
@@ -10,6 +11,7 @@ State::State()
 , timeLastUpdated(0)
 , timeUpdated(false)
 , timeMinuteUpdated(false)
+, temperature(0)
 , mode24h(false)
 , dim(false)
 , current_face(0)
@@ -55,10 +57,23 @@ void State::update() {
     timeLastUpdated = millis();
     timeMinuteUpdated = now.minute() != minute;
     timeUpdated = true;
+    readTemperature();
   } else {
     timeMinuteUpdated = false;
     timeUpdated = false;
   }
+}
+
+void State::readTemperature() {
+  Wire.requestFrom(0x49, 2);
+
+  byte MSB = Wire.read();
+  byte LSB = Wire.read();
+
+  //it's a 12bit int, using two's compliment for negative
+  int sum = ((MSB << 8) | LSB) >> 4;
+
+  temperature = sum * 0.0625f;
 }
 
 const __FlashStringHelper* State::getMonthStr(uint8_t m) const {

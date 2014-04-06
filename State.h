@@ -23,6 +23,8 @@ struct State {
   const __FlashStringHelper* getMonthStr(uint8_t m) const;
   const __FlashStringHelper* getDayStr(uint8_t d) const;
 
+  float temperature;
+
   // Settings
   bool mode24h;
   bool dim;
@@ -31,6 +33,7 @@ struct State {
   uint16_t tetris_highscore;
 
 private:
+  void readTemperature();
   unsigned long timeLastUpdated;
 };
 
