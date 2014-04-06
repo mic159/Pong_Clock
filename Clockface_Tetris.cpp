@@ -416,6 +416,9 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
 
   display->setCursor(55, 17);
   display->print(state.getDayStr(state.now.dayOfWeek()));
+  display->setCursor(103, 17);
+  display->print((uint8_t)state.temperature);
+  display->drawCircle(117, 17, 1, WHITE);
 
   // Date
   display->setCursor(55, 25);
