@@ -6,7 +6,7 @@
  * It also has the date on the right hand side of the screen.
  */
 #include <Arduino.h>
-#include <Adafriut_GFX.h>
+#include <Adafruit_GFX.h>
 #include "Clockface_Digital.h"
 #include "State.h"
 

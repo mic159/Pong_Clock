@@ -15,7 +15,7 @@
 
 #define DOTS_SPACE 10
 
-uint8_t PROGMEM pacman_bmp[13*2*3] = {
+const uint8_t PROGMEM pacman_bmp[13*2*3] = {
   B00000011, B11100000,
   B00001111, B11111000,
   B00011111, B11111100,
@@ -59,7 +59,7 @@ uint8_t PROGMEM pacman_bmp[13*2*3] = {
   B00000011, B11100000,
 };
 
-uint8_t PROGMEM blinky_bmp[28*2] = {
+const uint8_t PROGMEM blinky_bmp[28*2] = {
   B00000011, B11000000,
   B00001111, B11110000,
   B00011111, B11111000,
@@ -91,7 +91,7 @@ uint8_t PROGMEM blinky_bmp[28*2] = {
   B01000110, B01100010,
 };
 
-uint8_t PROGMEM pacman_die[308] = {
+const uint8_t PROGMEM pacman_die[308] = {
 		0x00,0x00,
 		0x60,0x0c,
 		0x70,0x1c,
