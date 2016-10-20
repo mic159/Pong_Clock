@@ -19,13 +19,12 @@ Mike uses [this one from sparkfun](https://www.sparkfun.com/products/9873)
 Requirements
 ------------
 
- * Bounce2 https://github.com/mic159/Bounce-Arduino-Wiring
- * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
- * Adafriut SSD1306 https://github.com/adafruit/Adafruit_SSD1306
- * RTClib https://github.com/mic159/RTClib
+ * Bounce2 (v1.2.0) https://github.com/thomasfredericks/Bounce2
+ * Adafruit GFX (v1.1.5) https://github.com/adafruit/Adafruit-GFX-Library
+ * Adafriut SSD1306 (v1.1.0) https://github.com/adafruit/Adafruit_SSD1306
+ * RTClib (v1.2.0) https://github.com/adafruit/RTClib
 
-**NOTE:** Some are using my forks. This was because I made some modifications to reduce RAM usage.
-I have submitted pull requests and hope to remove the need for my forks.
+You can install them via the Arduino library manager.
 
 Arduino SRAM
 ------------

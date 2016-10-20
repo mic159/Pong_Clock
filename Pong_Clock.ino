@@ -3,10 +3,12 @@
  * Code by mic159.
  *
  * Requirements:
- * Bounce2 https://github.com/mic159/Bounce-Arduino-Wiring
- * Adafruit GFX https://github.com/adafruit/Adafruit-GFX-Library
- * Adafriut SSD1306 https://github.com/adafruit/Adafruit_SSD1306
- * RTClib https://github.com/mic159/RTClib
+ * Bounce2 (v1.2.0) https://github.com/thomasfredericks/Bounce2
+ * Adafruit GFX (v1.1.5) https://github.com/adafruit/Adafruit-GFX-Library
+ * Adafriut SSD1306 (v1.1.0) https://github.com/adafruit/Adafruit_SSD1306
+ * RTClib (v1.2.0) https://github.com/adafruit/RTClib
+ * You can install them via the Arduino library manager.
+ * 
  */
 
 #include <Bounce2.h>

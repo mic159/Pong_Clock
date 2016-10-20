@@ -415,7 +415,7 @@ void ClockfaceTetris::draw(Adafruit_GFX* display) const {
   }
 
   display->setCursor(55, 17);
-  display->print(state.getDayStr(state.now.dayOfWeek()));
+  display->print(state.getDayStr(state.now.dayOfTheWeek()));
 
   // Date
   display->setCursor(55, 25);
