@@ -6,7 +6,6 @@
  * It also has the date on the right hand side of the screen.
  */
 #include <Arduino.h>
-#include <Adafruit_GFX.h>
 #include "Clockface_Digital.h"
 #include "State.h"
 
@@ -50,7 +49,7 @@ void ClockfaceDigital::draw(Adafruit_GFX* display) const {
 
   // Day of week
   display->setCursor(82, 18);
-  display->print(state.getDayStr(state.now.dayOfWeek()));
+  display->print(state.getDayStr(state.now.dayOfTheWeek()));
   display->print(' ');
   display->print((uint8_t)state.temperature);
   display->drawCircle(120, 19, 1, WHITE);
